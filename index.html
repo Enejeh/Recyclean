@@ -583,14 +583,19 @@
                         <p class="text-xs text-slate-500 mt-1">ID verification and age screening required for safety</p>
                     </div>
 
-                    <form onsubmit="handleAuthSubmit(event)" class="space-y-4 text-sm">
+                    <form id="signup-form" onsubmit="handleAuthSubmit(event)" class="space-y-4 text-sm">
                         <div>
                             <label class="block font-medium text-slate-700 mb-1 text-xs uppercase tracking-wider">Username</label>
                             <input type="text" id="signup-user" placeholder="eco_hero123" required class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white/80">
                         </div>
                         <div>
                             <label class="block font-medium text-slate-700 mb-1 text-xs uppercase tracking-wider">Email Address</label>
-                            <input type="email" placeholder="name@example.com" required class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white/80">
+                            <input type="email" id="signup-email" placeholder="name@example.com" required class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white/80">
+                        </div>
+                        <!-- DB: password field added so new accounts can log in again (stored as a bcrypt hash) -->
+                        <div>
+                            <label class="block font-medium text-slate-700 mb-1 text-xs uppercase tracking-wider">Password</label>
+                            <input type="password" id="signup-password" placeholder="••••••••" minlength="6" required class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white/80">
                         </div>
                         <div>
                             <label class="block font-medium text-slate-700 mb-1 text-xs uppercase tracking-wider">Date of Birth</label>
@@ -643,14 +648,14 @@
                         <p class="text-xs text-slate-500 mt-1">Access your earnings and drop-off history</p>
                     </div>
 
-                    <form onsubmit="handleAuthSubmit(event)" class="space-y-4 text-sm">
+                    <form id="login-form" onsubmit="handleAuthSubmit(event)" class="space-y-4 text-sm">
                         <div>
                             <label class="block font-medium text-slate-700 mb-1 text-xs uppercase tracking-wider">Email Address</label>
-                            <input type="email" placeholder="name@example.com" required class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white/80">
+                            <input type="email" id="login-email" placeholder="name@example.com" required class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white/80">
                         </div>
                         <div>
                             <label class="block font-medium text-slate-700 mb-1 text-xs uppercase tracking-wider">Password</label>
-                            <input type="password" placeholder="••••••••" required class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white/80">
+                            <input type="password" id="login-password" placeholder="••••••••" required class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white/80">
                         </div>
 
                         <button type="submit" class="btn-primary w-full py-3 mt-2 text-sm shadow-md">
@@ -1124,95 +1129,112 @@
         let currentUsername = "BronxEcoHero";
 
         // Global shared 311 reports array (accessible publicly by all users)
-        let public311Reports = [
-            {
-                id: 101,
-                title: "Illegal Dumping",
-                category: "Furniture & Drywall Dumped",
-                location: "E 149th St & 3rd Ave",
-                reporter: "Anonymous Citizen",
-                isAnonymous: true,
-                timeAgo: "12m ago",
-                status: "ACTIVE",
-                type: "negative"
-            },
-            {
-                id: 102,
-                title: "Overfilled Bin Clearance",
-                category: "Recycling Overflow",
-                location: "CSH Drop Bin - E 161st St",
-                reporter: "Maria (CSH Staff)",
-                isAnonymous: false,
-                timeAgo: "45m ago",
-                status: "RESOLVED",
-                type: "positive"
-            },
-            {
-                id: 103,
-                title: "Abandoned Construction Debris",
-                category: "Hazardous Chemical/Debris",
-                location: "Jerome Ave & 170th St",
-                reporter: "Anonymous Citizen",
-                isAnonymous: true,
-                timeAgo: "2h ago",
-                status: "DISPATCHED",
-                type: "pending"
+        // DB: now loaded from GET /api/311 (community reports + cached NYC 311 rows) by loadAppData()
+        let public311Reports = [];
+
+        /* ===== DB / API HELPERS (added to connect the page to the Postgres backend) ===== */
+        let rewardCheckpoints = [];   // DB: rows from GET /api/rewards (Perks timeline)
+        let userMapMarkers = [];      // DB: rows from GET /api/markers (map_markers table)
+        let claimedRewardIds = [];    // DB: rewards the logged-in user already claimed
+
+        async function api(path, options = {}) {
+            const opts = { credentials: 'same-origin', ...options };
+            if (opts.body && typeof opts.body !== 'string') {
+                opts.headers = { 'Content-Type': 'application/json', ...(opts.headers || {}) };
+                opts.body = JSON.stringify(opts.body);
             }
-        ];
+            const res = await fetch(path, opts);
+            let data = null;
+            try { data = await res.json(); } catch (e) { data = null; }
+            if (!res.ok) {
+                const err = new Error((data && data.error) || `Request failed (${res.status})`);
+                err.status = res.status;
+                throw err;
+            }
+            return data;
+        }
+
+        // Escape user-supplied text before putting it into innerHTML (DB content is shared between users)
+        function esc(v) {
+            return String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
+        function apiErrorAlert(e) {
+            if (e.status === 401) { alert('Your session has ended. Please log in again.'); showPage('login'); }
+            else alert(e.message);
+        }
+
+        // Load all shared page data from the database
+        async function loadAppData() {
+            try {
+                const [locs, alerts, reports, rewards, markers, chat] = await Promise.all([
+                    api('/api/locations'), api('/api/alerts'), api('/api/311'),
+                    api('/api/rewards'), api('/api/markers'), api('/api/chat')
+                ]);
+                locations = locs;
+                crowdedAlerts = alerts;
+                public311Reports = reports;
+                rewardCheckpoints = rewards;
+                userMapMarkers = markers;
+                renderChatMessages(chat);
+                renderRewardsTimeline();
+                render311PublicFeeds();
+                if (map) renderAlertMarkers('all');
+            } catch (e) {
+                console.error('Could not load data from the database', e);
+            }
+        }
+
+        function renderChatMessages(messages) {
+            document.getElementById('chat-messages').innerHTML = messages.map(m =>
+                `<div class="chat-msg"><strong>${esc(m.author)}:</strong> ${esc(m.body)}</div>`
+            ).join('');
+        }
+
+        // Apply a logged-in user's DB profile to the dashboard
+        function applyUser(user) {
+            currentUsername = user.display_name;
+            userIsOver18 = user.is_over_18 !== false;
+            claimedRewardIds = user.claimed_reward_ids || [];
+            document.getElementById('setting-avatar-name').innerText = currentUsername;
+            setPoints(user.points_balance);
+        }
+
+        // Set the points display to the balance stored in the DB
+        function setPoints(balance) {
+            currentPoints = balance;
+            document.querySelectorAll('.points-badge').forEach(el => el.innerText = `${currentPoints} PTS`);
+            updateTimelineState();
+        }
+
+        // Build the Perks timeline from the rewards table (same markup as the original 3 checkpoints)
+        function renderRewardsTimeline() {
+            if (!rewardCheckpoints.length) return;
+            const container = document.querySelector('.timeline-container');
+            container.innerHTML = '<div class="timeline-line"></div>' + rewardCheckpoints.map((r, i) => `
+                <div class="timeline-item" id="checkpoint-item-${i + 1}">
+                    <div class="timeline-circle">${i + 1}</div>
+                    <div class="timeline-content">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
+                            <div>
+                                <span style="background: rgba(234, 179, 8, 0.15); color: #eab308; font-size: 0.75rem; font-weight: 800; padding: 2px 10px; border-radius: 12px; border: 1px solid rgba(234, 179, 8, 0.3);">CHECKPOINT ${i + 1}</span>
+                                <h3 style="font-size: 1.25rem; font-weight: 800; color: #fff; margin-top: 6px;">${esc(r.icon || '🎁')} ${esc(r.title)}</h3>
+                                <p style="font-size: 0.85rem; color: #94a3b8; margin-top: 4px;">${esc(r.description)}</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <span style="font-size: 1.1rem; font-weight: 800; color: #eab308; display: block;">${r.points_required.toLocaleString()} PTS</span>
+                                <button id="claim-btn-${i + 1}" onclick="claimCheckpointReward(${i + 1}, ${r.points_required}, ${r.id})" class="btn-dash btn-search" style="margin-top: 8px; padding: 6px 14px; font-size: 0.8rem;">Claim Reward</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`).join('');
+            updateTimelineState();
+        }
+        /* ===== END DB / API HELPERS ===== */
 
         // 50 Interactive Map Locations Dataset Integrated
-        const locations = [
-          {"id": 1, "lat": 40.7128, "lng": -74.0060, "status": "Overly Trashed", "type": "Park Bench", "urgency": "High"},
-          {"id": 2, "lat": 40.7135, "lng": -74.0048, "status": "Cleaned", "type": "Bus Stop", "urgency": "Low"},
-          {"id": 3, "lat": 40.7142, "lng": -74.0075, "status": "Needs Attention", "type": "Sidewalk", "urgency": "Medium"},
-          {"id": 4, "lat": 40.7110, "lng": -74.0012, "status": "Overflowing Bin", "type": "Waste Can", "urgency": "High"},
-          {"id": 5, "lat": 40.7150, "lng": -74.0090, "status": "Cleaned", "type": "Plaza", "urgency": "Low"},
-          {"id": 6, "lat": 40.7161, "lng": -74.0031, "status": "Overly Trashed", "type": "Alleyway", "urgency": "High"},
-          {"id": 7, "lat": 40.7121, "lng": -74.0088, "status": "Hazmat Reported", "type": "Dumping Site", "urgency": "Critical"},
-          {"id": 8, "lat": 40.7175, "lng": -74.0055, "status": "Cleaned", "type": "Subway Entrance", "urgency": "Low"},
-          {"id": 9, "lat": 40.7180, "lng": -74.0020, "status": "Needs Attention", "type": "Park Lawn", "urgency": "Medium"},
-          {"id": 10, "lat": 40.7105, "lng": -74.0099, "status": "Overly Trashed", "type": "Street Corner", "urgency": "High"},
-          {"id": 11, "lat": 40.7131, "lng": -74.0019, "status": "Cleaned", "type": "Crosswalk", "urgency": "Low"},
-          {"id": 12, "lat": 40.7148, "lng": -74.0042, "status": "Overflowing Bin", "type": "Recycling Hub", "urgency": "High"},
-          {"id": 13, "lat": 40.7192, "lng": -74.0068, "status": "Needs Attention", "type": "Bike Lane", "urgency": "Medium"},
-          {"id": 14, "lat": 40.7118, "lng": -74.0035, "status": "Cleaned", "type": "Park Trail", "urgency": "Low"},
-          {"id": 15, "lat": 40.7165, "lng": -74.0081, "status": "Overly Trashed", "type": "Parking Lot", "urgency": "High"},
-          {"id": 16, "lat": 40.7139, "lng": -74.0095, "status": "Cleaned", "type": "Fountain Area", "urgency": "Low"},
-          {"id": 17, "lat": 40.7101, "lng": -74.0040, "status": "Needs Attention", "type": "Commercial Strip", "urgency": "Medium"},
-          {"id": 18, "lat": 40.7155, "lng": -74.0015, "status": "Overly Trashed", "type": "Underpass", "urgency": "High"},
-          {"id": 19, "lat": 40.7171, "lng": -74.0092, "status": "Cleaned", "type": "Playground", "urgency": "Low"},
-          {"id": 20, "lat": 40.7125, "lng": -74.0051, "status": "Overflowing Bin", "type": "Food Court Exit", "urgency": "High"},
-          {"id": 21, "lat": 40.7188, "lng": -74.0039, "status": "Cleaned", "type": "Dog Park", "urgency": "Low"},
-          {"id": 22, "lat": 40.7140, "lng": -74.0010, "status": "Needs Attention", "type": "Train Platform", "urgency": "Medium"},
-          {"id": 23, "lat": 40.7112, "lng": -74.0078, "status": "Overly Trashed", "type": "Vacant Lot", "urgency": "High"},
-          {"id": 24, "lat": 40.7168, "lng": -74.0049, "status": "Cleaned", "type": "Waterfront Walk", "urgency": "Low"},
-          {"id": 25, "lat": 40.7133, "lng": -74.0083, "status": "Hazmat Reported", "type": "Industrial Edge", "urgency": "Critical"},
-          {"id": 26, "lat": 40.7198, "lng": -74.0011, "status": "Needs Attention", "type": "Bus Terminal", "urgency": "Medium"},
-          {"id": 27, "lat": 40.7108, "lng": -74.0059, "status": "Cleaned", "type": "School Zone", "urgency": "Low"},
-          {"id": 28, "lat": 40.7152, "lng": -74.0033, "status": "Overly Trashed", "type": "Construction Perimeter", "urgency": "High"},
-          {"id": 29, "lat": 40.7177, "lng": -74.0071, "status": "Cleaned", "type": "Community Garden", "urgency": "Low"},
-          {"id": 30, "lat": 40.7123, "lng": -74.0025, "status": "Overflowing Bin", "type": "Main Street", "urgency": "High"},
-          {"id": 31, "lat": 40.7145, "lng": -74.0063, "status": "Needs Attention", "type": "Taxi Stand", "urgency": "Medium"},
-          {"id": 32, "lat": 40.7183, "lng": -74.0044, "status": "Cleaned", "type": "Library Plaza", "urgency": "Low"},
-          {"id": 33, "lat": 40.7104, "lng": -74.0085, "status": "Overly Trashed", "type": "Drainage Ditch", "urgency": "High"},
-          {"id": 34, "lat": 40.7160, "lng": -74.0018, "status": "Cleaned", "type": "Skatepark", "urgency": "Low"},
-          {"id": 35, "lat": 40.7137, "lng": -74.0070, "status": "Needs Attention", "type": "Outdoor Seating", "urgency": "Medium"},
-          {"id": 36, "lat": 40.7190, "lng": -74.0080, "status": "Overflowing Bin", "type": "Stadium Entrance", "urgency": "High"},
-          {"id": 37, "lat": 40.7116, "lng": -74.0022, "status": "Cleaned", "type": "Pedestrian Bridge", "urgency": "Low"},
-          {"id": 38, "lat": 40.7158, "lng": -74.0097, "status": "Overly Trashed", "type": "Behind Shopping Center", "urgency": "High"},
-          {"id": 39, "lat": 40.7129, "lng": -74.0038, "status": "Cleaned", "type": "City Hall Steps", "urgency": "Low"},
-          {"id": 40, "lat": 40.7173, "lng": -74.0028, "status": "Needs Attention", "type": "Market Alley", "urgency": "Medium"},
-          {"id": 41, "lat": 40.7109, "lng": -74.0066, "status": "Overly Trashed", "type": "Highway Ramp", "urgency": "High"},
-          {"id": 42, "lat": 40.7143, "lng": -74.0014, "status": "Cleaned", "type": "Post Office Lawn", "urgency": "Low"},
-          {"id": 43, "lat": 40.7185, "lng": -74.0059, "status": "Needs Attention", "type": "Residential Corner", "urgency": "Medium"},
-          {"id": 44, "lat": 40.7119, "lng": -74.0091, "status": "Overflowing Bin", "type": "Ferry Terminal", "urgency": "High"},
-          {"id": 45, "lat": 40.7163, "lng": -74.0037, "status": "Cleaned", "type": "Theater District Walkway", "urgency": "Low"},
-          {"id": 46, "lat": 40.7130, "lng": -74.0079, "status": "Overly Trashed", "type": "Storm Drain Area", "urgency": "High"},
-          {"id": 47, "lat": 40.7195, "lng": -74.0026, "status": "Cleaned", "type": "Visitor Center", "urgency": "Low"},
-          {"id": 48, "lat": 40.7102, "lng": -74.0017, "status": "Needs Attention", "type": "Loading Dock", "urgency": "Medium"},
-          {"id": 49, "lat": 40.7149, "lng": -74.0086, "status": "Overly Trashed", "type": "Bridge Footing", "urgency": "High"},
-          {"id": 50, "lat": 40.7169, "lng": -74.0062, "status": "Cleaned", "type": "Recreation Center", "urgency": "Low"}
-        ];
+        // DB: now loaded from GET /api/locations (map_locations table) by loadAppData()
+        let locations = [];
 
         // Status Color Map
         const statusColors = {
@@ -1307,13 +1329,39 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function handleAuthSubmit(event) {
+        // DB: login / signup now call the API; the dashboard opens only after the server accepts
+        async function handleAuthSubmit(event) {
             event.preventDefault();
-            const signupUser = document.getElementById('signup-user')?.value;
-            if (signupUser) {
-                currentUsername = signupUser;
-                document.getElementById('setting-avatar-name').innerText = currentUsername;
+            const isSignup = event.target.id === 'signup-form';
+            let result;
+            try {
+                if (isSignup) {
+                    result = await api('/api/signup', { method: 'POST', body: {
+                        username: document.getElementById('signup-user').value.trim(),
+                        email: document.getElementById('signup-email').value.trim(),
+                        password: document.getElementById('signup-password').value,
+                        date_of_birth: document.getElementById('signup-dob').value,
+                        parent_name: document.getElementById('parent-name').value.trim(),
+                        parent_email: document.getElementById('parent-email').value.trim(),
+                        parent_consent: document.getElementById('parent-consent-check').checked
+                    }});
+                } else {
+                    result = await api('/api/login', { method: 'POST', body: {
+                        email: document.getElementById('login-email').value.trim(),
+                        password: document.getElementById('login-password').value
+                    }});
+                }
+            } catch (e) {
+                alert(e.message);
+                return;
             }
+            event.target.reset();
+            enterDashboard(result.user);
+        }
+
+        // Opens the dashboard for a logged-in DB user (original dashboard-opening code below)
+        function enterDashboard(user) {
+            applyUser(user);
 
             const badge = document.getElementById('user-age-status-badge');
             const parentDesc = document.getElementById('parental-status-desc');
@@ -1341,6 +1389,7 @@
         }
 
         function logOut() {
+            api('/api/logout', { method: 'POST' }).catch(() => {});  // DB: end the server session
             closeDashModal('settings-modal');
             showPage('home');
         }
@@ -1361,11 +1410,8 @@
         let webcamStream = null;
         let activeMarkers = [];
 
-        const crowdedAlerts = [
-            { id: 1, name: "CSH Drop Bin", lat: 40.8208, lng: -73.8860, status: "blue", type: "positive", desc: "Official recycling drop-off hub." },
-            { id: 2, name: "Yankee Stadium Smart Bin", lat: 40.8296, lng: -73.9262, status: "blue", type: "positive", desc: "Solar-powered recycling compactor." },
-            { id: 3, name: "Mott Haven Heap 311", lat: 40.8110, lng: -73.9260, status: "red", type: "negative", desc: "Severe illegal dumping." }
-        ];
+        // DB: now loaded from GET /api/alerts (crowded_alerts table) by loadAppData()
+        let crowdedAlerts = [];
 
         /* EXPANSIVE REWARDS PAGE NAVIGATION LOGIC */
         function showRewardsPage() {
@@ -1393,17 +1439,28 @@
         function updateTimelineState() {
             document.getElementById('rewards-page-points-display').innerText = `${currentPoints} PTS`;
 
-            const checkpoints = [
-                { id: 1, req: 1250 },
-                { id: 2, req: 2000 },
-                { id: 3, req: 3500 }
-            ];
+            // DB: checkpoints come from the rewards table (falls back to the original 3 before data loads)
+            const checkpoints = rewardCheckpoints.length
+                ? rewardCheckpoints.map((r, i) => ({ id: i + 1, req: r.points_required, rewardId: r.id }))
+                : [
+                    { id: 1, req: 1250 },
+                    { id: 2, req: 2000 },
+                    { id: 3, req: 3500 }
+                ];
 
             checkpoints.forEach(cp => {
                 const item = document.getElementById(`checkpoint-item-${cp.id}`);
                 const btn = document.getElementById(`claim-btn-${cp.id}`);
+                if (!item || !btn) return;
 
-                if (currentPoints >= cp.req) {
+                if (cp.rewardId && claimedRewardIds.includes(cp.rewardId)) {
+                    // DB: already claimed by this user
+                    item.classList.add('unlocked');
+                    btn.disabled = true;
+                    btn.style.opacity = '0.7';
+                    btn.innerText = '✅ Claimed';
+                    btn.className = 'btn-dash btn-outline';
+                } else if (currentPoints >= cp.req) {
                     item.classList.add('unlocked');
                     btn.disabled = false;
                     btn.style.opacity = '1';
@@ -1419,9 +1476,16 @@
             });
         }
 
-        function claimCheckpointReward(num, cost) {
+        // DB: claims are saved to user_claimed_rewards (milestones: points are not spent)
+        async function claimCheckpointReward(num, cost, rewardId) {
             if (currentPoints >= cost) {
-                alert(`🎉 Congratulations! You have successfully claimed Reward Checkpoint ${num}!`);
+                if (!rewardId) return;
+                try {
+                    const r = await api(`/api/rewards/${rewardId}/claim`, { method: 'POST' });
+                    if (!claimedRewardIds.includes(rewardId)) claimedRewardIds.push(rewardId);
+                    updateTimelineState();
+                    alert(`🎉 Congratulations! You have successfully claimed Reward Checkpoint ${num}!\nRedemption code: ${r.redemption_code}`);
+                } catch (e) { apiErrorAlert(e); }
             } else {
                 alert(`You need ${cost - currentPoints} more points to reach Checkpoint ${num}.`);
             }
@@ -1501,6 +1565,29 @@
             if (filterType === 'all') {
                 render50Locations();
             }
+            renderUserMapMarkers(filterType);  // DB: map_markers (incl. user-reported hotspots)
+        }
+
+        // DB: draw rows from the map_markers table (community pins + "Report Litter Site" submissions)
+        function renderUserMapMarkers(filterType) {
+            userMapMarkers.forEach(mk => {
+                const positive = mk.category === 'Cleaned' || mk.category === 'Public Bin';
+                if (filterType === 'positive' && !positive) return;
+                if (filterType === 'negative' && positive) return;
+                const color = mk.category === 'Public Bin' ? '#3b82f6' : (statusColors[mk.category] || '#e67e22');
+                const marker = L.circleMarker([mk.lat, mk.lng], {
+                    radius: 9, fillColor: color, color: "#ffffff", weight: 2, opacity: 1, fillOpacity: 0.9
+                }).addTo(map);
+                marker.bindPopup(`
+                    <div style="font-size: 14px; color: #000;">
+                        <strong>${esc(mk.title)}</strong><br/>
+                        <b>Status:</b> <span style="color:${color}; font-weight:bold;">${esc(mk.category)}</span><br/>
+                        ${mk.description ? esc(mk.description) + '<br/>' : ''}
+                        ${mk.author ? '<b>Pinned by:</b> ' + esc(mk.author) : ''}
+                    </div>
+                `);
+                activeMarkers.push(marker);
+            });
         }
 
         function filterPins(type, element) {
@@ -1515,16 +1602,17 @@
         function render311PublicFeeds() {
             const streamContainer = document.getElementById('public-311-stream');
             if (streamContainer) {
+                // DB: values are escaped with esc() because reports are shared between users
                 streamContainer.innerHTML = public311Reports.map(report => `
                     <div class="incident-card ${report.type}">
                         <div class="incident-title">
-                            <span>🚨 ${report.title}</span>
-                            <span style="color:${report.type === 'positive' ? '#22c55e' : (report.type === 'pending' ? '#eab308' : '#ef4444')}">${report.status}</span>
+                            <span>🚨 ${esc(report.title)}</span>
+                            <span style="color:${report.type === 'positive' ? '#22c55e' : (report.type === 'pending' ? '#eab308' : '#ef4444')}">${esc(report.status)}</span>
                         </div>
-                        <p style="color:#cbd5e1;">${report.category}</p>
+                        <p style="color:#cbd5e1;">${esc(report.category)}</p>
                         <div class="incident-meta">
-                            <span>📍 ${report.location}</span>
-                            <span>${report.isAnonymous ? '<span class="anon-badge">🔒 Anonymous</span>' : '👤 ' + report.reporter} • ${report.timeAgo}</span>
+                            <span>📍 ${esc(report.location)}</span>
+                            <span>${report.isAnonymous ? '<span class="anon-badge">🔒 Anonymous</span>' : '👤 ' + esc(report.reporter)} • ${esc(report.timeAgo)}</span>
                         </div>
                     </div>
                 `).join('');
@@ -1552,26 +1640,38 @@
             modalList.innerHTML = filtered.map(r => `
                 <div style="background:#131c2a; border:1px solid #23344d; padding:6px 8px; border-radius:6px; font-size:0.75rem;">
                     <div style="display:flex; justify-content:space-between; font-weight:bold; color:#38bdf8;">
-                        <span>🚨 ${r.title}</span>
-                        <span style="color:#cbd5e1; font-size:0.65rem;">${r.timeAgo}</span>
+                        <span>🚨 ${esc(r.title)}</span>
+                        <span style="color:#cbd5e1; font-size:0.65rem;">${esc(r.timeAgo)}</span>
                     </div>
-                    <p style="color:#94a3b8; margin-top:2px;">📍 Location: ${r.location}</p>
+                    <p style="color:#94a3b8; margin-top:2px;">📍 Location: ${esc(r.location)}</p>
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px; font-size:0.68rem; color:#64748b;">
-                        <span>Reporter: ${r.isAnonymous ? '🔒 Anonymous Citizen' : r.reporter}</span>
-                        <span style="color:#eab308; font-weight:bold;">Status: ${r.status}</span>
+                        <span>Reporter: ${r.isAnonymous ? '🔒 Anonymous Citizen' : esc(r.reporter)}</span>
+                        <span style="color:#eab308; font-weight:bold;">Status: ${esc(r.status)}</span>
                     </div>
                 </div>
             `).join('');
         }
 
-        function handle311Submit(e) {
+        // DB: 311 reports are saved via POST /api/311 (+15 PTS awarded server-side)
+        async function handle311Submit(e) {
             e.preventDefault();
             const location = document.getElementById('311-location').value.trim();
             const category = document.getElementById('311-category').value;
             const isAnon = document.getElementById('311-anonymous').checked;
 
+            let saved;
+            try {
+                saved = await api('/api/311', { method: 'POST', body: {
+                    title: category.split(' ')[1] || "Sanitation Violation",
+                    category: category,
+                    location: location,
+                    description: document.getElementById('311-desc').value.trim(),
+                    anonymous: isAnon
+                }});
+            } catch (err) { apiErrorAlert(err); return; }
+
             const newReport = {
-                id: Date.now(),
+                id: saved.id,
                 title: category.split(' ')[1] || "Sanitation Violation",
                 category: category,
                 location: location,
@@ -1585,7 +1685,7 @@
             public311Reports.unshift(newReport);
             render311PublicFeeds();
 
-            addPoints(15);
+            setPoints(saved.points_balance);
             alert(`🚨 Public 311 Ticket dispatched! Published to community feed ${isAnon ? '(Anonymously)' : ''}. +15 PTS earned.`);
             
             document.getElementById('311-location').value = '';
@@ -1656,7 +1756,8 @@
             }
         }
 
-        function handleVolunteerSignup(e) {
+        // DB: volunteer registrations are saved via POST /api/volunteer (+25 PTS server-side; ID # is not stored)
+        async function handleVolunteerSignup(e) {
             e.preventDefault();
             const dob = document.getElementById('volunteer-dob').value;
             const age = calculateAge(dob);
@@ -1668,20 +1769,29 @@
 
             const name = document.getElementById('volunteer-name').value;
             const eventName = document.getElementById('volunteer-event').value;
+            let saved;
+            try {
+                saved = await api('/api/volunteer', { method: 'POST', body: { full_name: name, date_of_birth: dob, event_name: eventName } });
+            } catch (err) { apiErrorAlert(err); return; }
             document.getElementById('volunteer-form').style.display = 'none';
             const successBox = document.getElementById('volunteer-success');
             document.getElementById('volunteer-success-msg').innerText = `Verified 18+ Volunteer: ${name} registered for ${eventName}`;
             successBox.style.display = 'block';
-            addPoints(25);
+            setPoints(saved.points_balance);
         }
 
-        function sendChatMessage() {
+        // DB: chat messages are saved via POST /api/chat and shown escaped
+        async function sendChatMessage() {
             const input = document.getElementById('chat-input');
             const text = input.value.trim();
             if (!text) return;
+            let saved;
+            try {
+                saved = await api('/api/chat', { method: 'POST', body: { body: text } });
+            } catch (err) { apiErrorAlert(err); return; }
             const msgDiv = document.createElement('div');
             msgDiv.className = 'chat-msg';
-            msgDiv.innerHTML = `<strong>${currentUsername}:</strong> ${text}`;
+            msgDiv.innerHTML = `<strong>${esc(saved.author)}:</strong> ${esc(saved.body)}`;
             document.getElementById('chat-messages').appendChild(msgDiv);
             input.value = '';
         }
@@ -1736,8 +1846,14 @@
         async function runAiDetection() {
             const res = document.getElementById('scan-result');
             res.style.display = 'block';
+            // DB: each scan is logged to scan_logs via POST /api/scans (+20 PTS server-side).
+            // The demo detection has no real confidence value, so a fixed demo score is sent.
+            let saved;
+            try {
+                saved = await api('/api/scans', { method: 'POST', body: { detected_category: 'Plastic Recyclable', confidence_score: 90 } });
+            } catch (err) { apiErrorAlert(err); return; }
             res.innerHTML = '<span style="color:#22c55e;">✅ AI Detected: <strong>Plastic Recyclable</strong> (+20 PTS)</span>';
-            addPoints(20);
+            setPoints(saved.points_balance);
         }
 
         function closeCameraModal() {
@@ -1751,10 +1867,35 @@
             updateTimelineState();
         }
 
-        function handleReportSubmit(e) {
+        // DB: reported hotspots are geocoded (nominatim, like searchLocation) and saved to map_markers
+        //     via POST /api/markers (+15 PTS server-side), then pinned on the map.
+        const severityToStatus = { yellow: 'Needs Attention', orange: 'Overflowing Bin', red: 'Overly Trashed' };
+        async function handleReportSubmit(e) {
             e.preventDefault();
-            addPoints(15);
+            const place = document.getElementById('report-location').value.trim();
+            const sevSelect = document.getElementById('report-severity');
+            const center = map ? map.getCenter() : { lat: userCoords[0], lng: userCoords[1] };
+            let lat = center.lat, lng = center.lng;
+            try {
+                const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(place + ' NYC')}`);
+                const data = await res.json();
+                if (data && data.length > 0) { lat = parseFloat(data[0].lat); lng = parseFloat(data[0].lon); }
+            } catch (err) { /* geocoding failed: pin at current map center */ }
+            let saved;
+            try {
+                saved = await api('/api/markers', { method: 'POST', body: {
+                    lat, lng, title: place,
+                    category: severityToStatus[sevSelect.value] || 'Needs Attention',
+                    description: sevSelect.options[sevSelect.selectedIndex].text
+                }});
+            } catch (err) { apiErrorAlert(err); return; }
+            userMapMarkers.push({ id: saved.id, lat, lng, title: place,
+                category: severityToStatus[sevSelect.value] || 'Needs Attention',
+                description: sevSelect.options[sevSelect.selectedIndex].text, author: currentUsername });
+            if (map) { renderAlertMarkers('all'); map.setView([lat, lng], 15); }
+            setPoints(saved.points_balance);
             alert("Site reported! +15 PTS");
+            document.getElementById('report-location').value = '';
             closeDashModal('report-modal');
         }
 
@@ -1772,6 +1913,10 @@
 
         updatePageBackgrounds();
         showPage('home');
+
+        // DB: load shared data, and reopen the dashboard if this browser already has a login session
+        loadAppData();
+        api('/api/me').then(r => { if (r && r.user) enterDashboard(r.user); }).catch(() => {});
     </script>
 </body>
 </html>
