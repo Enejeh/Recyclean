@@ -23,6 +23,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js"></script>
 
     <style>
+        /* MAP: tint OpenStreetMap tiles for the dark and light map themes (tiles only, not markers) */
+        .rc-tiles-dark { filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9) saturate(0.5); }
+        .rc-tiles-light { filter: saturate(0.4) brightness(1.04) contrast(0.92); }
         :root {
             --bg-main: #0d131d;
             --bg-card: #131c2a;
@@ -1661,7 +1664,7 @@
         function initMap() {
             if (map) return;
             map = L.map('map').setView(userCoords, 14);
-            tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
+            tileLayer = makeBaseLayer('dark').addTo(map);
             userMarker = L.marker(userCoords).addTo(map).bindPopup("<b>🎯 NY Center Hub</b>");
             new RcLocateControl().addTo(map);  // UI: compact locate button, bottom-left inside the map
             renderAlertMarkers('all');
@@ -1852,16 +1855,22 @@
             document.getElementById(panelId).classList.add('active');
         }
 
+        // MAP: CARTO basemaps now require an API key (they serve an "API KEY REQUIRED" tile),
+        // so every theme uses free OpenStreetMap tiles; dark/light looks come from CSS filters
+        // (.rc-tiles-dark / .rc-tiles-light) applied to the tile layer only.
+        function makeBaseLayer(theme) {
+            const cls = theme === 'light' ? 'rc-tiles-light' : theme === 'street' ? '' : 'rc-tiles-dark';
+            return L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                className: cls,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors'
+            });
+        }
+
         function changeMapTheme(theme) {
             if (!map) return;
             map.removeLayer(tileLayer);
-            if (theme === 'light') {
-                tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
-            } else if (theme === 'street') {
-                tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
-            } else {
-                tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
-            }
+            tileLayer = makeBaseLayer(theme).addTo(map);
         }
 
         function openVolunteerModal() {
