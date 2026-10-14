@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>RECYCLEAN - Smart Community Recycling & Public 311 Dispatch</title>
 
     <!-- Tailwind CSS -->
@@ -119,9 +119,9 @@
             color: var(--text-color);
             display: flex;
             flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
         }
+        #app-dashboard-container.hidden { display: none; }
 
         .dash-header {
             background-color: var(--bg-header);
@@ -184,33 +184,6 @@
             font-size: 0.75rem; font-weight: 800; padding: 4px 10px; border-radius: 15px;
         }
 
-        .header-rewards {
-            border: 1px solid #eab308; border-radius: 20px;
-            padding: 6px 14px; display: flex; align-items: center; gap: 8px;
-            color: #eab308; font-size: 0.85rem; font-weight: 700; cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .header-rewards:hover {
-            background-color: rgba(234, 179, 8, 0.15);
-            transform: translateY(-1px);
-        }
-
-        .settings-btn {
-            background-color: var(--bg-card); border: 1px solid var(--border-color);
-            color: #ffffff; font-size: 1.2rem; width: 38px; height: 38px;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;
-        }
-
-        .controls-section { padding: 0.75rem 1.5rem 0.25rem 1.5rem; }
-
-        .search-card {
-            background-color: var(--bg-card); border: 1px solid var(--border-color);
-            border-radius: 14px; padding: 0.8rem 1rem; display: flex; flex-direction: column; gap: 0.6rem;
-        }
-
-        .search-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-        .input-wrapper { flex: 1; min-width: 200px; }
-
         .search-input {
             width: 100%; background-color: #ffffff; color: #000000;
             border: none; padding: 0.65rem 1rem; border-radius: 8px; font-size: 0.9rem; font-weight: 500;
@@ -226,21 +199,6 @@
         .btn-outline { background-color: rgba(0, 200, 117, 0.05); border: 1.5px solid #00c875; color: #00c875; }
         .btn-311 { background-color: #0284c7; color: #ffffff; }
         .btn-report { background-color: #ef4444; color: #ffffff; }
-
-        .filter-row { display: flex; align-items: center; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
-        .filter-label { font-size: 0.8rem; color: var(--accent-green); font-weight: 600; white-space: nowrap; }
-
-        .pill {
-            background-color: #172233; border: 1px solid #23344d; color: #94a3b8;
-            padding: 5px 12px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; cursor: pointer; white-space: nowrap;
-        }
-        .pill.active { background-color: var(--accent-green); color: #052e16; border-color: var(--accent-green); }
-
-        .workspace {
-            flex: 1; margin: 0.5rem 1.5rem 1rem 1.5rem;
-            background-color: #090d16; border: 1px solid var(--border-color);
-            border-radius: 14px; display: flex; flex-direction: column; overflow: hidden; position: relative;
-        }
 
         /* REWARDS TIMELINE PAGE STYLES */
         .rewards-page-view {
@@ -313,49 +271,14 @@
             box-shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
         }
 
-        .map-bar {
-            background-color: var(--bg-header); padding: 8px 16px;
-            display: flex; gap: 12px; align-items: center; border-bottom: 1px solid var(--border-color);
-            z-index: 1000; flex-wrap: wrap;
-        }
-
-        .toggle-btn {
-            background: #1e293b; color: #38bdf8; border: 1px solid #0284c7;
-            padding: 4px 10px; border-radius: 6px; font-size: 0.78rem; font-weight: 700;
-            cursor: pointer; display: flex; align-items: center; gap: 4px;
-        }
-        .toggle-btn:hover { background: #0284c7; color: #fff; }
-
-        .status-legend {
-            display: flex; align-items: center; gap: 12px; margin-left: auto;
-            font-size: 0.75rem; background: #05080e; padding: 4px 12px;
-            border-radius: 20px; border: 1px solid var(--border-color); flex-wrap: wrap;
-        }
         .legend-item { display: flex; align-items: center; gap: 4px; }
         .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
 
-        .main-content-layout { display: flex; flex: 1; height: 100%; position: relative; overflow: hidden; }
-        #map { flex: 1; height: 100%; z-index: 1; background: #090d16; transition: all 0.3s ease; }
-
-        .side-sections-container {
-            width: 380px; background-color: var(--border-color);
-            display: flex; flex-direction: column; z-index: 2; gap: 1px;
-            transition: transform 0.3s ease, width 0.3s ease;
-        }
-        .side-sections-container.collapsed { width: 0px; transform: translateX(100%); overflow: hidden; }
-
-        .section-311, .section-chat {
-            flex: 1; background-color: var(--bg-card);
-            display: flex; flex-direction: column; overflow: hidden; transition: flex 0.2s ease;
-        }
-        .section-311.minimized, .section-chat.minimized { flex: 0 0 38px; }
-
         .section-header {
             padding: 8px 14px; background-color: #0b121e; border-bottom: 1px solid var(--border-color);
-            font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; justify-content: space-between;
+            font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; justify-content: space-between; gap: 8px;
         }
 
-        .panel-controls { display: flex; align-items: center; gap: 6px; }
         .panel-ctrl-btn {
             background: none; border: none; color: #94a3b8; cursor: pointer;
             font-size: 0.85rem; padding: 2px 4px; border-radius: 4px;
@@ -363,7 +286,6 @@
         .panel-ctrl-btn:hover { color: #ffffff; background-color: #1e293b; }
 
         .section-body { padding: 10px 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-        .section-311.minimized .section-body, .section-chat.minimized .section-body { display: none; }
 
         .incident-card {
             background: #0b1320; border: 1px solid var(--border-color);
@@ -464,6 +386,234 @@
             border-radius: 4px;
             border: 1px solid #475569;
         }
+
+        /* =====================================================================
+           UI REFACTOR (rc-*): decluttered dashboard, map locate control,
+           collapsible chat, floating mobile nav island, menu sheet.
+           ===================================================================== */
+        :root {
+            --rc-header-h: 64px;
+            --rc-island-space: calc(96px + env(safe-area-inset-bottom, 0px));
+        }
+
+        /* Header: sticky, compact; top nav only on desktop */
+        .rc-header { position: sticky; top: 0; z-index: 1100; gap: 12px; min-height: var(--rc-header-h); }
+        .rc-header .brand-text h1 { white-space: nowrap; }
+        .dash-nav .nav-item { background: none; border: 0; font-family: inherit; }
+        .dash-nav .nav-item:focus-visible,
+        .rc-points-chip:focus-visible,
+        .rc-chat-toggle:focus-visible,
+        .rc-sheet-item:focus-visible,
+        .rc-sheet-close:focus-visible,
+        .rc-pin-filter button:focus-visible,
+        .rc-map-locate:focus-visible,
+        .rc-island-btn:focus-visible { outline: 2px solid var(--accent-green); outline-offset: 2px; }
+        .rc-points-chip {
+            display: none; align-items: center; gap: 4px; flex-shrink: 0;
+            background: none; border: 1px solid #eab308; border-radius: 20px; padding: 3px 4px 3px 8px;
+            color: #eab308; font-size: 0.8rem; cursor: pointer;
+        }
+
+        /* Main dashboard workspace */
+        .rc-main { flex: 1; display: flex; flex-direction: column; gap: 0.75rem; padding: 0.75rem 1.5rem 1.5rem; width: 100%; max-width: 1440px; margin: 0 auto; }
+        .rc-search { display: flex; gap: 8px; align-items: stretch; }
+        .rc-search .search-input { flex: 1; min-width: 0; }
+        .rc-search .btn-dash { flex-shrink: 0; }
+
+        .rc-map-card {
+            position: relative; border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden;
+            background: #090d16; height: clamp(420px, calc(100vh - 230px), 820px);
+            scroll-margin-top: calc(var(--rc-header-h) + 8px);
+        }
+        .rc-map-card #map { position: absolute; inset: 0; z-index: 1; background: #090d16; }
+
+        /* Locate button: small Leaflet control, bottom-left inside the map */
+        .rc-map-locate {
+            width: 38px; height: 38px; border-radius: 10px; padding: 0;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            background: rgba(11, 15, 23, 0.88); color: #e2e8f0;
+            border: 1px solid rgba(148, 163, 184, 0.35); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .rc-map-locate:hover { background: #1e293b; color: var(--accent-green); }
+        .rc-map-locate svg { width: 20px; height: 20px; }
+        .rc-map-locate.is-loading { cursor: progress; color: var(--accent-green); }
+        .rc-map-locate.is-loading svg { animation: rc-spin 1s linear infinite; }
+        .rc-map-locate.is-error { color: #f87171; border-color: rgba(239, 68, 68, 0.6); }
+        @keyframes rc-spin { to { transform: rotate(360deg); } }
+        .rc-map-toast {
+            position: absolute; left: 58px; bottom: 12px; z-index: 1001; max-width: calc(100% - 130px);
+            background: rgba(11, 15, 23, 0.92); color: #e2e8f0; border: 1px solid var(--border-color);
+            font-size: 0.75rem; padding: 6px 10px; border-radius: 8px; pointer-events: none;
+            opacity: 0; transform: translateY(4px); transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .rc-map-toast.is-visible { opacity: 1; transform: none; }
+
+        /* News feed + chat sections below the map */
+        .rc-panels { display: grid; grid-template-columns: 1fr; gap: 0.75rem; align-items: start; }
+        .rc-panel {
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px;
+            overflow: hidden; display: flex; flex-direction: column;
+            scroll-margin-top: calc(var(--rc-header-h) + 8px);
+        }
+        .rc-panel-title { font-size: 0.85rem; font-weight: 700; margin: 0; }
+        .rc-feed { max-height: 360px; }
+        .rc-panel-foot { padding: 8px 12px; background: #0b121e; border-top: 1px solid var(--border-color); }
+
+        /* Collapsible chat */
+        .rc-panel-heading { margin: 0; font-size: 0.85rem; font-weight: 700; }
+        .rc-chat-toggle {
+            width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+            padding: 10px 14px; background: #0b121e; border: 0; color: inherit; font: inherit; cursor: pointer; text-align: left;
+        }
+        .rc-chat-toggle-pill {
+            display: inline-flex; align-items: center; gap: 4px; font-size: 0.75rem; font-weight: 700;
+            color: #052e16; background: var(--accent-green); padding: 4px 10px; border-radius: 999px; white-space: nowrap;
+        }
+        .rc-chev { display: inline-block; transition: transform 0.3s ease; }
+        .rc-chat-toggle[aria-expanded="true"] .rc-chev { transform: rotate(180deg); }
+        .rc-chat-toggle[aria-expanded="true"] .rc-chat-toggle-pill { background: #1e293b; color: #e2e8f0; }
+        .rc-chat-panel {
+            display: grid; grid-template-rows: 0fr; opacity: 0; visibility: hidden;
+            transition: grid-template-rows 0.3s ease, opacity 0.25s ease, visibility 0s linear 0.3s;
+        }
+        .rc-chat-panel.is-open {
+            grid-template-rows: 1fr; opacity: 1; visibility: visible;
+            transition: grid-template-rows 0.3s ease, opacity 0.25s ease, visibility 0s linear 0s;
+        }
+        .rc-chat-inner { min-height: 0; overflow: hidden; }
+        .rc-chat-panel.is-open .rc-chat-inner { border-top: 1px solid var(--border-color); }
+        .rc-chat .chat-messages { flex: none; min-height: 120px; max-height: 280px; }
+        .rc-chat .chat-input-row input, .rc-chat .chat-input-row button { font-size: 0.85rem; padding: 8px 12px; }
+
+        /* Floating bottom navigation island (glassmorphism with a solid fallback) */
+        .rc-island {
+            position: fixed; left: 50%; transform: translateX(-50%);
+            bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+            width: min(440px, calc(100% - 24px)); z-index: 2000;
+            display: flex; align-items: flex-end; justify-content: space-between; gap: 2px;
+            padding: 6px 8px; border-radius: 24px;
+            background: rgba(11, 15, 23, 0.96);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        }
+        @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+            .rc-island {
+                background: rgba(15, 23, 42, 0.6);
+                -webkit-backdrop-filter: blur(18px) saturate(160%);
+                backdrop-filter: blur(18px) saturate(160%);
+            }
+        }
+        .rc-island-btn {
+            flex: 1 1 0; min-width: 0; min-height: 50px;
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 3px;
+            padding: 6px 2px; border: 0; border-radius: 16px; background: none; cursor: pointer;
+            color: #94a3b8; font-family: inherit; font-size: 0.68rem; font-weight: 600;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .rc-island-btn .rc-ico { font-size: 1.25rem; line-height: 1; }
+        .rc-island-btn:hover { color: #e2e8f0; }
+        .rc-island-btn.is-active { color: var(--accent-green); background: rgba(0, 200, 117, 0.14); }
+        .rc-island-report { overflow: visible; }
+        .rc-island-report:hover, .rc-island-report.is-active { background: none; }
+        .rc-island-fab {
+            width: 56px; height: 56px; margin-top: -30px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+            background: linear-gradient(135deg, #00c875, #16a34a);
+            box-shadow: 0 8px 20px rgba(0, 200, 117, 0.45), 0 0 0 4px var(--bg-main);
+            transition: transform 0.2s ease;
+        }
+        .rc-island-report:hover .rc-island-fab, .rc-island-report:focus-visible .rc-island-fab { transform: translateY(-2px); }
+        .rc-island-report .rc-lbl { color: #e2e8f0; }
+
+        /* Menu / settings sheet */
+        .rc-sheet { position: fixed; inset: 0; z-index: 30000; display: flex; align-items: flex-end; justify-content: center; }
+        .rc-sheet[hidden] { display: none; }
+        .rc-sheet-backdrop { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.6); animation: rc-fade 0.2s ease; }
+        .rc-sheet-panel {
+            position: relative; width: 100%; max-width: 520px; max-height: 85vh; overflow-y: auto;
+            background: var(--bg-card); color: #fff; border: 1px solid var(--border-color); border-bottom: 0;
+            border-radius: 20px 20px 0 0; padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom, 0px));
+            animation: rc-sheet-up 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes rc-sheet-up { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+        @keyframes rc-fade { from { opacity: 0; } to { opacity: 1; } }
+        .rc-sheet-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .rc-sheet-avatar { width: 44px; height: 44px; font-size: 1.3rem; flex-shrink: 0; }
+        .rc-sheet-title { font-size: 1.05rem; font-weight: 800; margin: 0; }
+        .rc-sheet-sub { font-size: 0.8rem; color: #94a3b8; margin: 2px 0 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .rc-sheet-close { background: #1e293b; border: 0; color: #cbd5e1; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; flex-shrink: 0; }
+        .rc-sheet-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .rc-sheet-item {
+            display: flex; align-items: center; gap: 8px; text-align: left; min-height: 48px;
+            padding: 10px 12px; border-radius: 12px; cursor: pointer;
+            background: #0b1320; border: 1px solid var(--border-color); color: #e2e8f0;
+            font-family: inherit; font-size: 0.82rem; font-weight: 600;
+        }
+        .rc-sheet-item:hover { border-color: var(--accent-green); }
+        .rc-sheet-item span:first-of-type { flex: 1; }
+        .rc-sheet-section { margin-top: 14px; }
+        .rc-sheet-label { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-green); margin: 0 0 6px; cursor: default; }
+        .rc-legend summary { cursor: pointer; }
+        .rc-legend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; font-size: 0.78rem; color: #cbd5e1; padding-top: 4px; }
+        .rc-pin-filter { display: flex; gap: 6px; flex-wrap: wrap; }
+        .rc-pin-filter button {
+            flex: 1; min-height: 36px; padding: 6px 10px; border-radius: 999px; cursor: pointer;
+            background: #172233; border: 1px solid #23344d; color: #94a3b8; font-family: inherit; font-size: 0.78rem; font-weight: 600;
+        }
+        .rc-pin-filter button.active { background: var(--accent-green); border-color: var(--accent-green); color: #052e16; }
+
+        /* Tablet / phone (< 1024px): island replaces the top nav */
+        @media (max-width: 1023.98px) {
+            :root { --rc-header-h: 56px; }
+            nav.dash-nav.rc-topnav { display: none; }
+            .rc-points-chip { display: inline-flex; }
+            .rc-header { padding: 0.5rem 0.75rem; }
+            .rc-header .brand-icon { width: 34px; height: 34px; font-size: 18px; border-radius: 8px; }
+            .rc-header .brand-text h1 { font-size: 0.95rem; }
+            #app-dashboard-container { padding-bottom: var(--rc-island-space); }
+            .rc-main { padding: 0.5rem 0.75rem 0.75rem; gap: 0.5rem; }
+            .rc-map-card { height: max(320px, calc(100vh - var(--rc-header-h) - 64px - var(--rc-island-space))); }
+            @supports (height: 100dvh) {
+                .rc-map-card { height: max(320px, calc(100dvh - var(--rc-header-h) - 64px - var(--rc-island-space))); }
+            }
+            .rewards-page-view { margin: 0.75rem; gap: 1rem; }
+            .rc-rewards-hero { padding: 1.25rem !important; }
+            .rc-rewards-title { font-size: 1.35rem !important; }
+            .timeline-item { gap: 14px; }
+            .timeline-circle { width: 44px; height: 44px; font-size: 1.05rem; }
+            .timeline-line { left: 20px; }
+            .timeline-content { padding: 1rem; }
+            .modal-dash-content { width: calc(100% - 24px); padding: 1.1rem; max-height: calc(100vh - 32px); }
+            .settings-modal-content { height: auto; max-height: calc(100vh - 32px); }
+            .settings-container { flex-direction: column; }
+            .settings-sidebar { width: 100%; flex-direction: row; overflow-x: auto; padding: 0; border-right: 0; border-bottom: 1px solid var(--border-color); }
+            .settings-menu-item { white-space: nowrap; border-left: 0; border-bottom: 3px solid transparent; padding: 10px 14px; }
+            .settings-menu-item.active { border-bottom-color: var(--accent-green); }
+        }
+        @media (max-width: 420px) {
+            .rc-header .brand-badge { display: none; }
+            .rc-hide-sm { display: none; }
+        }
+
+        /* Desktop (>= 1024px): standard top nav, no island; feed + chat side by side */
+        @media (min-width: 1024px) {
+            .rc-island { display: none; }
+            .rc-panels { grid-template-columns: 1fr 1fr; }
+            .rc-sheet { align-items: center; }
+            .rc-sheet-panel { border-radius: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .rc-chat-panel, .rc-chat-panel.is-open, .rc-chev, .rc-island-btn, .rc-island-fab,
+            .rc-map-toast, .rc-map-locate { transition: none !important; }
+            .rc-sheet-panel, .rc-sheet-backdrop, .rc-map-locate.is-loading svg { animation: none !important; }
+        }
+
+        /* Public pages: tighter paddings on small screens */
+        @media (max-width: 639.98px) {
+            .page-bg { background-attachment: scroll; padding: 0.75rem; border-radius: 16px; }
+        }
     </style>
 </head>
 <body class="min-h-screen bg-slate-50 flex flex-col justify-between">
@@ -471,10 +621,10 @@
     <!-- PUBLIC SITE LAYOUT -->
     <div id="public-layout" class="min-h-screen flex flex-col justify-between w-full">
         <header class="public-header border-b bg-white/90 backdrop-blur-md sticky top-0 z-40 shadow-sm transition-colors duration-300">
-            <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center gap-4">
+            <div class="max-w-5xl mx-auto px-3 sm:px-4 py-2 sm:py-3 flex flex-wrap justify-between items-center gap-x-4 gap-y-1">
                 <div class="flex items-center gap-3">
                     <div class="cursor-pointer flex items-center gap-2" onclick="showPage('home')">
-                        <img src="logo.png" alt="RECYCLEAN Logo" class="h-9 w-auto object-contain" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'40\' viewBox=\'0 0 120 40\'><text x=\'0\' y=\'28\' fill=\'%2316a34a\' font-family=\'sans-serif\' font-weight=\'bold\' font-size=\'20\'>RECYCLEAN</text></svg>'">
+                        <span class="text-xl font-extrabold tracking-tight text-emerald-600 dark:text-emerald-400" aria-label="RECYCLEAN home">RECYCLEAN</span>
                     </div>
 
                     <button id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme" class="relative inline-flex items-center w-12 h-6 rounded-full bg-slate-200 dark:bg-slate-700 p-0.5 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-inner group">
@@ -484,7 +634,7 @@
                     </button>
                 </div>
 
-                <nav class="flex gap-4 sm:gap-6 text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-300">
+                <nav class="w-full sm:w-auto flex justify-between sm:justify-start gap-3 sm:gap-6 text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-300 whitespace-nowrap">
                     <button onclick="showPage('home')" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition">Home</button>
                     <button onclick="showPage('policies')" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition">Our Policies</button>
                     <button onclick="showPage('pitch')" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition">Our Data & Pitch</button>
@@ -680,132 +830,89 @@
 
     <!-- LOGGED-IN DASHBOARD APPLICATION -->
     <div id="app-dashboard-container" class="hidden">
-        <header class="dash-header" role="banner">
+        <!-- UI: compact header. Desktop (>=1024px) shows the standard top nav; phones use the bottom island instead. -->
+        <header class="dash-header rc-header" role="banner">
             <div class="brand-container">
-                <div class="brand-icon">♻️</div>
+                <div class="brand-icon" aria-hidden="true">♻️</div>
                 <div class="brand-text">
                     <h1>CSH / BRONX <span class="brand-badge">RecyClean v3.4</span></h1>
-                    <p>Open / Close Collapsible Side Panels</p>
                 </div>
             </div>
 
-            <nav class="dash-nav" aria-label="Main Navigation">
-                <div id="nav-item-map" class="nav-item active" onclick="showMapView()">🌐 Map View</div>
-                <div class="nav-item" onclick="openVolunteerModal()">🤝 Volunteer (18+)</div>
-                <div class="nav-item" onclick="openCameraModal()">📸 AI Scanner</div>
-                <div class="nav-item" onclick="openDashModal('notifications-modal')">🔔 Alerts <span class="badge-count">5</span></div>
-                <div id="nav-item-rewards" class="nav-item" onclick="showRewardsPage()">🎁 Perks <span class="points-badge">140 PTS</span></div>
+            <nav class="dash-nav rc-topnav" aria-label="Main navigation">
+                <button type="button" id="nav-item-map" class="nav-item active" data-rc-view="map" aria-current="page" onclick="rcGo('map')">🗺️ Map</button>
+                <button type="button" class="nav-item" data-rc-view="chat" onclick="rcGo('chat')">💬 Chat</button>
+                <button type="button" class="nav-item" data-rc-view="report" onclick="rcGo('report')">📸 Report Litter</button>
+                <button type="button" class="nav-item" data-rc-view="news" onclick="rcGo('news')">📰 News</button>
+                <button type="button" id="nav-item-rewards" class="nav-item" data-rc-view="rewards" onclick="rcGo('rewards')">🎁 Perks <span class="points-badge">140 PTS</span></button>
+                <button type="button" class="nav-item" data-rc-view="menu" onclick="rcGo('menu', this)" aria-haspopup="dialog" aria-controls="rc-menu-sheet">☰ Menu</button>
             </nav>
 
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <!-- BUTTON SHOWING CURRENCY LEADS TO EXPANSIVE REWARDS TIMELINE PAGE -->
-                <div class="header-rewards" onclick="showRewardsPage()" title="View Points & Unlockable Rewards Timeline">
-                    💵 $<span id="header-balance">0.00</span> | 🎖️ <span class="points-badge" style="padding:0;">140 PTS</span>
-                </div>
-                <button class="settings-btn" onclick="openDashModal('settings-modal')" title="Settings">⚙️</button>
-            </div>
+            <!-- UI: on phones the points pill is the shortcut to the Perks timeline -->
+            <button type="button" class="rc-points-chip" onclick="rcGo('rewards')" aria-label="View points and rewards timeline">🎖️ <span class="points-badge">140 PTS</span></button>
         </header>
 
-        <!-- MAP DASHBOARD SECTION -->
-        <div id="dashboard-map-section" class="flex-1 flex flex-col overflow-hidden">
-            <main class="controls-section">
-                <div class="search-card">
-                    <div class="search-row">
-                        <div class="input-wrapper">
-                            <input type="text" id="search-input" class="search-input" placeholder="Search Bronx, Mott Haven, Prospect Park..." onkeypress="if(event.key==='Enter') searchLocation()">
-                        </div>
-                        <button class="btn-dash btn-search" onclick="searchLocation()">🔍 Set Location</button>
-                        <button class="btn-dash btn-outline" onclick="locateUser()">🎯 Locate Me</button>
-                        <button class="btn-dash btn-311" onclick="openDashModal('nyc311-modal')">🏛️ Public 311 Feed</button>
-                        <button class="btn-dash btn-report" onclick="openDashModal('report-modal')">🗑️ Report Litter Site</button>
+        <!-- MAP DASHBOARD SECTION (map, public 311 news feed, collapsible chat) -->
+        <div id="dashboard-map-section" class="rc-main">
+            <form class="rc-search" role="search" onsubmit="event.preventDefault(); searchLocation();">
+                <label for="search-input" class="sr-only">Search for a place</label>
+                <input type="search" id="search-input" class="search-input" placeholder="Search Bronx, Mott Haven, Prospect Park..." autocomplete="off">
+                <button type="submit" class="btn-dash btn-search" aria-label="Set location">🔍 <span class="rc-hide-sm">Set Location</span></button>
+            </form>
+
+            <section id="rc-map-section" class="rc-map-card" aria-label="NYC interactive eco and 311 map">
+                <div id="map"></div>
+                <!-- UI: status messages from the locate button (e.g. permission denied) -->
+                <div id="rc-map-toast" class="rc-map-toast" role="status" aria-live="polite"></div>
+            </section>
+
+            <div class="rc-panels">
+                <section class="rc-panel" id="section-311" aria-labelledby="rc-news-title">
+                    <div class="section-header">
+                        <h2 id="rc-news-title" class="rc-panel-title" style="color:#38bdf8;">📰 Public 311 Incident Feed</h2>
+                        <span style="font-size:0.68rem; color:#00c875;">● Live Public Reports</span>
                     </div>
-
-                    <div class="filter-row">
-                        <span class="filter-label">🌐 Region Focus:</span>
-                        <button class="pill active" onclick="setRegion('All', this)">All NYC Metro</button>
-                        <button class="pill" onclick="setRegion('Bronx', this)">Bronx / CSH</button>
-                        <button class="pill" onclick="setRegion('Manhattan', this)">Manhattan</button>
-                        <button class="pill" onclick="setRegion('Brooklyn', this)">Brooklyn</button>
-                        <button class="pill" onclick="setRegion('Queens', this)">Queens</button>
-                        <button class="pill" onclick="filterPins('all', this)" style="margin-left:auto; border-color:#0284c7;">Show All Pins</button>
-                        <button class="pill" onclick="filterPins('positive', this)" style="border-color:#22c55e;">Positive Only (+)</button>
-                        <button class="pill" onclick="filterPins('negative', this)" style="border-color:#ef4444;">Negative Only (-)</button>
+                    <div class="section-body rc-feed" id="public-311-stream">
+                        <!-- Populated dynamically via JS -->
                     </div>
-                </div>
-            </main>
-
-            <div class="workspace">
-                <div class="map-bar">
-                    <button class="toggle-btn" id="sidebar-toggle-btn" onclick="toggleSidebar()">
-                        <span id="toggle-icon">⏩</span> <span id="toggle-text">Close Side Panels</span>
-                    </button>
-                    <span class="filter-label" style="color: #94a3b8; margin-left: 8px;">📍 NYC Interactive Eco & 311 Map</span>
-                    
-                    <div class="status-legend">
-                        <div class="legend-item"><div class="legend-dot" style="background:#2ecc71;"></div> Cleaned</div>
-                        <div class="legend-item"><div class="legend-dot" style="background:#e67e22;"></div> Needs Attention</div>
-                        <div class="legend-item"><div class="legend-dot" style="background:#e74c3c;"></div> Overly Trashed</div>
-                        <div class="legend-item"><div class="legend-dot" style="background:#9b59b6;"></div> Overflowing Bin</div>
-                        <div class="legend-item"><div class="legend-dot" style="background:#34495e;"></div> Hazmat Reported</div>
-                        <div class="legend-item"><div class="legend-dot" style="background:#3b82f6;"></div> Hub (+)</div>
+                    <div class="rc-panel-foot">
+                        <button type="button" class="btn-dash btn-311" style="width:100%; padding: 8px;" onclick="openDashModal('nyc311-modal')">➕ View / Report 311 Ticket</button>
                     </div>
-                </div>
+                </section>
 
-                <div class="main-content-layout">
-                    <div id="map"></div>
-
-                    <div class="side-sections-container" id="side-container">
-                        <section class="section-311" id="section-311">
-                            <div class="section-header">
-                                <span style="color:#38bdf8;">🏛️ Public 311 Incident Feed</span>
-                                <div class="panel-controls">
-                                    <span style="font-size:0.68rem; color:#00c875; margin-right:4px;">● Live Public Reports</span>
-                                    <button class="panel-ctrl-btn" onclick="minimizeSection('section-311')" title="Minimize Panel">➖</button>
-                                    <button class="panel-ctrl-btn" onclick="toggleSidebar()" title="Close All Side Panels">✖</button>
-                                </div>
-                            </div>
-                            
-                            <!-- PUBLIC STREAM BODY -->
-                            <div class="section-body" id="public-311-stream">
-                                <!-- Populated dynamically via JS -->
-                            </div>
-                            <div style="padding:8px 12px; background:#0b121e; border-top:1px solid var(--border-color);">
-                                <button class="btn-dash btn-311" style="width:100%; padding: 6px;" onclick="openDashModal('nyc311-modal')">➕ View / Report 311 Ticket</button>
-                            </div>
-                        </section>
-
-                        <section class="section-chat" id="section-chat">
-                            <div class="section-header">
-                                <span style="color:#00c875;">💬 Community Eco Chat</span>
-                                <div class="panel-controls">
-                                    <span style="font-size:0.68rem; color:#8a99ad; margin-right:4px;">Bronx Network</span>
-                                    <button class="panel-ctrl-btn" onclick="minimizeSection('section-chat')" title="Minimize Panel">➖</button>
-                                    <button class="panel-ctrl-btn" onclick="toggleSidebar()" title="Close All Side Panels">✖</button>
-                                </div>
-                            </div>
+                <!-- UI: community chat is a collapsible section (open/closed state remembered in localStorage) -->
+                <section class="rc-panel rc-chat" id="section-chat">
+                    <h2 class="rc-panel-heading">
+                        <button type="button" id="rc-chat-toggle" class="rc-chat-toggle" aria-expanded="false" aria-controls="rc-chat-panel" onclick="rcToggleChat()">
+                            <span style="color:#00c875;">💬 Community Eco Chat</span>
+                            <span class="rc-chat-toggle-pill"><span id="rc-chat-toggle-label">Open chat</span> <span class="rc-chev" aria-hidden="true">▾</span></span>
+                        </button>
+                    </h2>
+                    <div id="rc-chat-panel" class="rc-chat-panel" role="region" aria-labelledby="rc-chat-toggle" inert>
+                        <div class="rc-chat-inner">
                             <div class="section-body">
                                 <div class="chat-messages" id="chat-messages">
                                     <div class="chat-msg"><strong>Alex (Mott Haven):</strong> Heavy dumping spotted near E 149th St! 🚨</div>
                                     <div class="chat-msg"><strong>Maria (CSH Center):</strong> Cleaned up 4 bags of plastic near the CSH Hub! ♻️</div>
                                 </div>
                                 <div class="chat-input-row">
-                                    <input type="text" id="chat-input" placeholder="Say something..." onkeypress="handleChatSubmit(event)">
-                                    <button onclick="sendChatMessage()">Send</button>
+                                    <input type="text" id="chat-input" placeholder="Say something..." aria-label="Chat message" onkeypress="handleChatSubmit(event)">
+                                    <button type="button" onclick="sendChatMessage()">Send</button>
                                 </div>
                             </div>
-                        </section>
+                        </div>
                     </div>
-                </div>
+                </section>
             </div>
         </div>
 
         <!-- SEPARATE EXPANSIVE REWARDS TIMELINE PAGE -->
         <div id="dashboard-rewards-page" class="rewards-page-view hidden">
             <!-- Top Hero Banner with Points -->
-            <div style="background: linear-gradient(135deg, rgba(19, 28, 42, 0.95), rgba(11, 15, 23, 0.95)); border: 1px solid var(--border-color); border-radius: 16px; padding: 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5);">
+            <div class="rc-rewards-hero" style="background: linear-gradient(135deg, rgba(19, 28, 42, 0.95), rgba(11, 15, 23, 0.95)); border: 1px solid var(--border-color); border-radius: 16px; padding: 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5);">
                 <div>
                     <button onclick="showMapView()" class="btn-dash btn-outline mb-3" style="padding: 4px 12px; font-size: 0.78rem;">← Back to Map View</button>
-                    <h1 style="font-size: 1.8rem; font-weight: 800; color: #ffffff; letter-spacing: -0.5px;">🏆 RECYCLEAN Points & Rewards Timeline</h1>
+                    <h1 class="rc-rewards-title" style="font-size: 1.8rem; font-weight: 800; color: #ffffff; letter-spacing: -0.5px;">🏆 RECYCLEAN Points & Rewards Timeline</h1>
                     <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 4px;">Earn points by completing community recycling tasks, AI scans, and 311 reporting.</p>
                 </div>
                 <div style="background: rgba(234, 179, 8, 0.1); border: 2px solid #eab308; padding: 1rem 1.5rem; border-radius: 14px; text-align: center;">
@@ -896,7 +1003,9 @@
                     </label>
                     <button class="btn-dash btn-311" onclick="runAiDetection()">⚡ Run AI Scan</button>
                 </div>
-                <button class="btn-dash" style="background:#ef4444; color:#fff; width:100%; margin-top:12px;" onclick="closeCameraModal()">Close</button>
+                <!-- UI: the island's Report button opens this scanner; the map-pin report stays one tap away -->
+                <button type="button" class="btn-dash btn-report" style="width:100%; margin-top:12px;" onclick="closeCameraModal(); openDashModal('report-modal');">🗑️ No photo? Pin a Litter Site on the Map</button>
+                <button class="btn-dash" style="background:#ef4444; color:#fff; width:100%; margin-top:8px;" onclick="closeCameraModal()">Close</button>
             </div>
         </div>
 
@@ -1112,6 +1221,64 @@
                 </div>
             </div>
         </div>
+
+        <!-- UI: floating bottom navigation island (phones/tablets only; hidden at >=1024px where the top nav is shown) -->
+        <nav class="rc-island" aria-label="Quick navigation">
+            <button type="button" class="rc-island-btn is-active" data-rc-view="map" aria-current="page" aria-label="Map" onclick="rcGo('map')"><span class="rc-ico" aria-hidden="true">🗺️</span><span class="rc-lbl">Map</span></button>
+            <button type="button" class="rc-island-btn" data-rc-view="chat" aria-label="Chat" onclick="rcGo('chat')"><span class="rc-ico" aria-hidden="true">💬</span><span class="rc-lbl">Chat</span></button>
+            <button type="button" class="rc-island-btn rc-island-report" data-rc-view="report" aria-label="Report litter" onclick="rcGo('report')"><span class="rc-island-fab" aria-hidden="true">📸</span><span class="rc-lbl">Report</span></button>
+            <button type="button" class="rc-island-btn" data-rc-view="news" aria-label="News: public 311 feed" onclick="rcGo('news')"><span class="rc-ico" aria-hidden="true">📰</span><span class="rc-lbl">News</span></button>
+            <button type="button" class="rc-island-btn" data-rc-view="menu" aria-label="Menu and settings" aria-haspopup="dialog" aria-controls="rc-menu-sheet" aria-expanded="false" onclick="rcGo('menu', this)"><span class="rc-ico" aria-hidden="true">☰</span><span class="rc-lbl">Menu</span></button>
+        </nav>
+
+        <!-- UI: Menu / Settings sheet (bottom sheet on phones, centered card on desktop).
+             Holds the entry points that used to live in the header, search bar and filter row. -->
+        <div id="rc-menu-sheet" class="rc-sheet" role="dialog" aria-modal="true" aria-labelledby="rc-menu-title" hidden>
+            <div class="rc-sheet-backdrop" onclick="rcCloseMenu()"></div>
+            <div class="rc-sheet-panel">
+                <div class="rc-sheet-head">
+                    <div class="avatar-preview rc-sheet-avatar" aria-hidden="true">👤</div>
+                    <div style="flex:1; min-width:0;">
+                        <h2 id="rc-menu-title" class="rc-sheet-title">Menu</h2>
+                        <p class="rc-sheet-sub"><span id="rc-menu-name">BronxEcoHero</span> · <span class="points-badge">140 PTS</span></p>
+                    </div>
+                    <button type="button" class="rc-sheet-close" onclick="rcCloseMenu()" aria-label="Close menu">✖</button>
+                </div>
+
+                <div class="rc-sheet-grid">
+                    <button type="button" class="rc-sheet-item" onclick="rcMenuAction(() => rcGo('rewards'))">🎁 <span>Rewards &amp; Perks</span></button>
+                    <button type="button" class="rc-sheet-item" onclick="rcMenuAction(openVolunteerModal)">🤝 <span>Volunteer (18+)</span></button>
+                    <button type="button" class="rc-sheet-item" onclick="rcMenuAction(() => openDashModal('notifications-modal'))">🔔 <span>Alerts</span> <span class="badge-count">5</span></button>
+                    <button type="button" class="rc-sheet-item" onclick="rcMenuAction(openCameraModal)">📸 <span>AI Recyclable Scanner</span></button>
+                    <button type="button" class="rc-sheet-item" onclick="rcMenuAction(() => openDashModal('report-modal'))">🗑️ <span>Pin a Litter Site</span></button>
+                    <button type="button" class="rc-sheet-item" onclick="rcMenuAction(() => openDashModal('nyc311-modal'))">🏛️ <span>File a 311 Report</span></button>
+                    <button type="button" class="rc-sheet-item" onclick="rcMenuAction(() => openDashModal('settings-modal'))">⚙️ <span>Settings &amp; Profile</span></button>
+                </div>
+
+                <div class="rc-sheet-section">
+                    <h3 class="rc-sheet-label">Map pins</h3>
+                    <div class="rc-pin-filter" role="group" aria-label="Filter map pins">
+                        <button type="button" class="active" aria-pressed="true" onclick="filterPins('all', this)">All</button>
+                        <button type="button" aria-pressed="false" onclick="filterPins('positive', this)">Positive (+)</button>
+                        <button type="button" aria-pressed="false" onclick="filterPins('negative', this)">Negative (−)</button>
+                    </div>
+                </div>
+
+                <details class="rc-sheet-section rc-legend">
+                    <summary class="rc-sheet-label">Map legend</summary>
+                    <div class="rc-legend-grid">
+                        <div class="legend-item"><div class="legend-dot" style="background:#2ecc71;"></div> Cleaned</div>
+                        <div class="legend-item"><div class="legend-dot" style="background:#e67e22;"></div> Needs Attention</div>
+                        <div class="legend-item"><div class="legend-dot" style="background:#e74c3c;"></div> Overly Trashed</div>
+                        <div class="legend-item"><div class="legend-dot" style="background:#9b59b6;"></div> Overflowing Bin</div>
+                        <div class="legend-item"><div class="legend-dot" style="background:#34495e;"></div> Hazmat Reported</div>
+                        <div class="legend-item"><div class="legend-dot" style="background:#3b82f6;"></div> Hub (+)</div>
+                    </div>
+                </details>
+
+                <button type="button" class="btn-dash" style="background:#ef4444; color:#fff; width:100%; margin-top:12px;" onclick="rcCloseMenu(); logOut();">🚪 Log Out</button>
+            </div>
+        </div>
     </div>
 
 
@@ -1197,6 +1364,7 @@
             userIsOver18 = user.is_over_18 !== false;
             claimedRewardIds = user.claimed_reward_ids || [];
             document.getElementById('setting-avatar-name').innerText = currentUsername;
+            document.getElementById('rc-menu-name').innerText = currentUsername;  // UI: menu sheet header
             setPoints(user.points_balance);
         }
 
@@ -1418,8 +1586,8 @@
             document.getElementById('dashboard-map-section').classList.add('hidden');
             document.getElementById('dashboard-rewards-page').classList.remove('hidden');
 
-            document.querySelectorAll('nav.dash-nav .nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById('nav-item-rewards').classList.add('active');
+            rcSetActive('rewards');  // UI: top nav + island active state
+            window.scrollTo(0, 0);
 
             updateTimelineState();
         }
@@ -1428,8 +1596,7 @@
             document.getElementById('dashboard-rewards-page').classList.add('hidden');
             document.getElementById('dashboard-map-section').classList.remove('hidden');
 
-            document.querySelectorAll('nav.dash-nav .nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById('nav-item-map').classList.add('active');
+            rcSetActive('map');  // UI: top nav + island active state
 
             if (map) {
                 setTimeout(() => map.invalidateSize(), 250);
@@ -1496,6 +1663,7 @@
             map = L.map('map').setView(userCoords, 14);
             tileLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
             userMarker = L.marker(userCoords).addTo(map).bindPopup("<b>🎯 NY Center Hub</b>");
+            new RcLocateControl().addTo(map);  // UI: compact locate button, bottom-left inside the map
             renderAlertMarkers('all');
             setTimeout(() => map.invalidateSize(), 300);
         }
@@ -1523,26 +1691,6 @@
                 `);
                 activeMarkers.push(marker);
             });
-        }
-
-        function toggleSidebar() {
-            const sideContainer = document.getElementById('side-container');
-            const toggleIcon = document.getElementById('toggle-icon');
-            const toggleText = document.getElementById('toggle-text');
-
-            sideContainer.classList.toggle('collapsed');
-            if (sideContainer.classList.contains('collapsed')) {
-                toggleIcon.innerText = "◀️";
-                toggleText.innerText = "Open 311 & Chat";
-            } else {
-                toggleIcon.innerText = "⏩";
-                toggleText.innerText = "Close Side Panels";
-            }
-            setTimeout(() => { map.invalidateSize(); }, 320);
-        }
-
-        function minimizeSection(sectionId) {
-            document.getElementById(sectionId).classList.toggle('minimized');
         }
 
         function renderAlertMarkers(filterType) {
@@ -1591,10 +1739,12 @@
         }
 
         function filterPins(type, element) {
-            document.querySelectorAll('.filter-row .pill').forEach(p => {
-                if (p.innerText.includes('Pins') || p.innerText.includes('Only')) p.classList.remove('active');
+            // UI: pin filter now lives in the Menu sheet (was in the removed filter-chip row)
+            document.querySelectorAll('.rc-pin-filter button').forEach(b => {
+                const on = b === element;
+                b.classList.toggle('active', on);
+                b.setAttribute('aria-pressed', String(on));
             });
-            element.classList.add('active');
             renderAlertMarkers(type);
         }
 
@@ -1810,14 +1960,68 @@
             } catch (e) { alert("Search error."); }
         }
 
-        function locateUser() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(pos => {
-                    userCoords = [pos.coords.latitude, pos.coords.longitude];
-                    map.setView(userCoords, 15);
-                });
+        // UI: same geolocation logic as before, plus a loading state on the map button and a friendly error message
+        let rcMeMarker = null;
+        function locateUser(btn) {
+            if (!map) return;
+            if (!navigator.geolocation) { rcMapToast('Location isn\u2019t available in this browser.', btn); return; }
+            if (btn) {
+                btn.classList.remove('is-error');
+                btn.classList.add('is-loading');
+                btn.setAttribute('aria-busy', 'true');
+                btn.disabled = true;
             }
+            const done = () => {
+                if (!btn) return;
+                btn.classList.remove('is-loading');
+                btn.removeAttribute('aria-busy');
+                btn.disabled = false;
+            };
+            navigator.geolocation.getCurrentPosition(pos => {
+                done();
+                userCoords = [pos.coords.latitude, pos.coords.longitude];
+                map.setView(userCoords, 15);
+                if (rcMeMarker) rcMeMarker.setLatLng(userCoords);
+                else rcMeMarker = L.circleMarker(userCoords, { radius: 7, fillColor: '#38bdf8', color: '#ffffff', weight: 2, fillOpacity: 1 })
+                    .addTo(map).bindPopup('📍 You are here');
+            }, err => {
+                done();
+                const msg = err && err.code === 1
+                    ? 'Location permission denied. Allow location access in your browser settings.'
+                    : 'Couldn\u2019t get your location. Please try again.';
+                rcMapToast(msg, btn);
+            }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
         }
+
+        let rcToastTimer = null;
+        function rcMapToast(message, btn) {
+            const toast = document.getElementById('rc-map-toast');
+            toast.textContent = message;
+            toast.classList.add('is-visible');
+            if (btn) btn.classList.add('is-error');
+            clearTimeout(rcToastTimer);
+            rcToastTimer = setTimeout(() => {
+                toast.classList.remove('is-visible');
+                if (btn) btn.classList.remove('is-error');
+            }, 4500);
+        }
+
+        // UI: Leaflet control that hosts the locate button inside the map (bottom-left)
+        const RcLocateControl = L.Control.extend({
+            options: { position: 'bottomleft' },
+            onAdd: function () {
+                const btn = L.DomUtil.create('button', 'rc-map-locate');
+                btn.type = 'button';
+                btn.title = 'Show my location';
+                btn.setAttribute('aria-label', 'Show my location');
+                btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">'
+                    + '<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/>'
+                    + '<path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>';
+                L.DomEvent.disableClickPropagation(btn);
+                L.DomEvent.on(btn, 'click', e => { L.DomEvent.preventDefault(e); locateUser(btn); });
+                return btn;
+            }
+        });
 
         function openCameraModal() { openDashModal('camera-modal'); }
         async function startWebcam() {
@@ -1899,17 +2103,99 @@
             closeDashModal('report-modal');
         }
 
-        function setRegion(borough, element) {
-            if (borough === 'Bronx') map.setView([40.8448, -73.8648], 13);
-            else if (borough === 'Manhattan') map.setView([40.7831, -73.9712], 13);
-            else map.setView(userCoords, 14);
-        }
-
         function openDashModal(id) { 
             document.getElementById(id).style.display = 'flex'; 
             if (id === 'nyc311-modal') render311PublicFeeds();
         }
         function closeDashModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        /* ===== UI: VIEW SWITCHING (top nav + bottom island), CHAT TOGGLE, MENU SHEET ===== */
+        const RC_VIEW_TARGETS = { map: 'rc-map-section', chat: 'section-chat', news: 'section-311' };
+
+        function rcReducedMotion() {
+            return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        }
+
+        // Highlight the current destination in both navs (aria-current on the active one)
+        function rcSetActive(view) {
+            document.querySelectorAll('[data-rc-view]').forEach(el => {
+                const on = el.dataset.rcView === view;
+                el.classList.toggle(el.classList.contains('nav-item') ? 'active' : 'is-active', on);
+                if (on) el.setAttribute('aria-current', 'page'); else el.removeAttribute('aria-current');
+            });
+        }
+
+        function rcGo(view, trigger) {
+            if (view === 'report') { openCameraModal(); return; }   // camera / AI scan reporting flow
+            if (view === 'menu') { rcOpenMenu(trigger); return; }
+            if (view === 'rewards') { showRewardsPage(); return; }
+
+            showMapView();
+            rcSetActive(view);
+            const reduced = rcReducedMotion();
+            const behavior = reduced ? 'auto' : 'smooth';
+            // If the chat is collapsed, open it first and scroll once it has expanded (page must be tall enough)
+            const wait = (view === 'chat' && !document.getElementById('rc-chat-panel').classList.contains('is-open') && !reduced) ? 320 : 0;
+            if (view === 'chat') rcSetChatOpen(true);
+            setTimeout(() => {
+                if (view === 'map') window.scrollTo({ top: 0, behavior });
+                else document.getElementById(RC_VIEW_TARGETS[view]).scrollIntoView({ behavior, block: 'start' });
+            }, wait);
+        }
+
+        const RC_CHAT_KEY = 'rc-chat-open';
+        function rcSetChatOpen(open, persist = true) {
+            const btn = document.getElementById('rc-chat-toggle');
+            const panel = document.getElementById('rc-chat-panel');
+            btn.setAttribute('aria-expanded', String(open));
+            document.getElementById('rc-chat-toggle-label').textContent = open ? 'Close chat' : 'Open chat';
+            panel.classList.toggle('is-open', open);
+            if (open) panel.removeAttribute('inert'); else panel.setAttribute('inert', '');
+            if (open) {
+                const msgs = document.getElementById('chat-messages');
+                msgs.scrollTop = msgs.scrollHeight;
+            }
+            if (persist) { try { localStorage.setItem(RC_CHAT_KEY, open ? '1' : '0'); } catch (e) { /* storage unavailable */ } }
+        }
+        function rcToggleChat() {
+            rcSetChatOpen(document.getElementById('rc-chat-toggle').getAttribute('aria-expanded') !== 'true');
+        }
+
+        let rcMenuTrigger = null;
+        function rcOpenMenu(trigger) {
+            rcMenuTrigger = trigger || document.activeElement;
+            const sheet = document.getElementById('rc-menu-sheet');
+            sheet.hidden = false;
+            document.querySelectorAll('[aria-controls="rc-menu-sheet"]').forEach(b => b.setAttribute('aria-expanded', 'true'));
+            sheet.querySelector('.rc-sheet-close').focus();
+        }
+        function rcCloseMenu(restoreFocus = true) {
+            const sheet = document.getElementById('rc-menu-sheet');
+            if (sheet.hidden) return;
+            sheet.hidden = true;
+            document.querySelectorAll('[aria-controls="rc-menu-sheet"]').forEach(b => b.setAttribute('aria-expanded', 'false'));
+            if (restoreFocus && rcMenuTrigger && rcMenuTrigger.focus) rcMenuTrigger.focus();
+        }
+        function rcMenuAction(fn) { rcCloseMenu(false); fn(); }
+
+        document.addEventListener('keydown', e => {
+            const sheet = document.getElementById('rc-menu-sheet');
+            if (sheet.hidden) return;
+            if (e.key === 'Escape') { rcCloseMenu(); return; }
+            if (e.key === 'Tab') {   // keep keyboard focus inside the open sheet
+                const f = sheet.querySelectorAll('button, summary, [href], input, select');
+                const first = f[0], last = f[f.length - 1];
+                if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+                else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+            }
+        });
+
+        (function rcInitChat() {
+            let saved = null;
+            try { saved = localStorage.getItem(RC_CHAT_KEY); } catch (e) { /* storage unavailable */ }
+            rcSetChatOpen(saved === '1', false);
+        })();
+        /* ===== END UI ===== */
 
         updatePageBackgrounds();
         showPage('home');
