@@ -135,7 +135,7 @@ ON CONFLICT (id) DO NOTHING;
 INSERT INTO public_311_reports (id, title, category, location, reporter, is_anonymous, status, type, created_at) VALUES
   (101, 'Illegal Dumping',               'Furniture & Drywall Dumped', 'E 149th St & 3rd Ave',        'Anonymous Citizen',  true,  'ACTIVE',     'negative', now() - interval '12 minutes'),
   (102, 'Overfilled Bin Clearance',      'Recycling Overflow',         'CSH Drop Bin - E 161st St',   'Maria (CSH Staff)',  false, 'RESOLVED',   'positive', now() - interval '45 minutes'),
-  (103, 'Abandoned Construction Debris', 'Hazardous Chemical/Debris',  'Jerome Ave & 170th St',       'Anonymous Citizen',  true,  'DISPATCHED', 'pending',  now() - interval '2 hours')
+  (103, 'Abandoned Construction Debris', 'Hazardous Chemical/Debris',  'Jerome Ave & 170th St',       'Anonymous Citizen',  true,  'REPORTED', 'pending',  now() - interval '2 hours')
 ON CONFLICT (id) DO NOTHING;
 SELECT setval(pg_get_serial_sequence('public_311_reports', 'id'),
               GREATEST((SELECT max(id) FROM public_311_reports), 103));

@@ -231,7 +231,8 @@ def _cache_type(status):
 
 @app.get("/api/311")
 def reports_311():
-    """Community reports (newest first) followed by cached NYC Open Data 311 rows."""
+    """Community reports (newest first) followed by the sample 311-style rows seeded in nyc_311_cache
+    (fictional examples, labeled as sample data on screen)."""
     with db() as conn:
         community = conn.execute(
             """SELECT id, title, category, location, description, reporter, is_anonymous,
@@ -266,7 +267,7 @@ def reports_311():
             "category": r["descriptor"] or r["complaint_type"],
             "location": loc,
             "description": None,
-            "reporter": "NYC 311 Open Data",
+            "reporter": "Sample data (not from NYC 311)",  # seed rows are fictional examples, not real 311 records
             "isAnonymous": False,
             "timeAgo": time_ago(r["last_synced"]),
             "status": (r["status"] or "").upper(),

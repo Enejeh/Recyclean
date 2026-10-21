@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>RECYCLEAN - Smart Community Recycling & Public 311 Dispatch</title>
+    <title>RECYCLEAN - Smart Community Recycling & Litter Reporting</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -651,19 +651,19 @@
             <!-- HOME PAGE -->
             <section id="page-home" class="page-view page-bg space-y-12">
                 <div class="app-card p-8 md:p-12 text-center space-y-6">
-                    <span class="inline-block bg-emerald-100/80 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Verified Safety & Anonymous Public Reporting System</span>
+                    <span class="inline-block bg-emerald-100/80 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Community Litter Reporting & Cleanup Rewards</span>
                     <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
-                        Collect Local Litter.<br><span class="text-emerald-600 dark:text-emerald-400">Get Paid & Report Violations.</span>
+                        Collect Local Litter.<br><span class="text-emerald-600 dark:text-emerald-400">Earn Rewards & Report Problems.</span>
                     </h1>
                     <p class="text-slate-600 max-w-2xl mx-auto text-base md:text-lg">
-                        Clean up neighborhood trash safely, file anonymous 311 reports, and view community activity transparently.
+                        Clean up neighborhood trash safely, post anonymous community reports, and view community activity transparently.
                     </p>
 
                     <div class="pt-2">
                         <button onclick="showPage('signup')" class="btn-primary text-xl py-4 px-10 w-full max-w-md shadow-lg">
                             GET STARTED NOW
                         </button>
-                        <p class="text-xs text-slate-500 mt-2">ID Verification Required for 18+ Field Work • Anonymous 311 Reporting Enabled</p>
+                        <p class="text-xs text-slate-500 mt-2">Field cleanups are for ages 18+ (or with a parent/guardian) • Anonymous reporting available</p>
                     </div>
                 </div>
 
@@ -672,18 +672,18 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="app-card p-6">
                             <div class="w-10 h-10 bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 rounded-lg flex items-center justify-center font-bold text-lg mb-4">1</div>
-                            <h3 class="font-bold text-slate-900 mb-1">Verify Age & ID</h3>
-                            <p class="text-sm text-slate-600">Provide photo ID and parental consent if under 18 prior to joining active volunteer cleanups.</p>
+                            <h3 class="font-bold text-slate-900 mb-1">Join Safely</h3>
+                            <p class="text-sm text-slate-600">Sign up with your date of birth. Volunteers under 18 need parental consent before joining field cleanups.</p>
                         </div>
                         <div class="app-card p-6">
                             <div class="w-10 h-10 bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 rounded-lg flex items-center justify-center font-bold text-lg mb-4">2</div>
-                            <h3 class="font-bold text-slate-900 mb-1">Public 311 Feed</h3>
+                            <h3 class="font-bold text-slate-900 mb-1">Community Reports</h3>
                             <p class="text-sm text-slate-600">Report illegal dumping anonymously or publicly, check existing reports to avoid duplicates.</p>
                         </div>
                         <div class="app-card p-6">
                             <div class="w-10 h-10 bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 rounded-lg flex items-center justify-center font-bold text-lg mb-4">3</div>
-                            <h3 class="font-bold text-slate-900 mb-1">Direct Payout</h3>
-                            <p class="text-sm text-slate-600">Earn direct digital rewards and points verified securely on the community ledger.</p>
+                            <h3 class="font-bold text-slate-900 mb-1">Earn Rewards</h3>
+                            <p class="text-sm text-slate-600">Earn points for reports, photo scans, and cleanups, and unlock reward milestones.</p>
                         </div>
                     </div>
                 </div>
@@ -699,11 +699,11 @@
                     <div class="space-y-6 text-sm md:text-base text-slate-600">
                         <div class="p-6 bg-slate-50/80 rounded-2xl border border-slate-200/80 space-y-2">
                             <h2 class="text-xl font-bold text-slate-900">1. Age 18+ Mandatory Clean-Up Requirement</h2>
-                            <p>To register as a field volunteer for physical trash collection activities, users must be at least 18 years of age and hold a verified ID. Volunteers under 18 are prohibited from field trash cleanup without verified parental consent and adult supervision.</p>
+                            <p>To register as a field volunteer for physical trash collection activities, users must be at least 18 years of age. Volunteers under 18 are prohibited from field trash cleanup without parental consent and adult supervision.</p>
                         </div>
                         <div class="p-6 bg-slate-50/80 rounded-2xl border border-slate-200/80 space-y-2">
-                            <h2 class="text-xl font-bold text-slate-900">2. Anonymous Community 311 Reports</h2>
-                            <p>Users are empowered to report illegal dumping, trash overflow, or sanitation hazards anonymously. All reports are published to a public community feed so neighbors can inspect active issues before submitting redundant tickets.</p>
+                            <h2 class="text-xl font-bold text-slate-900">2. Anonymous Community Reports</h2>
+                            <p>Users are empowered to report illegal dumping, trash overflow, or sanitation hazards anonymously. All reports are published to a public community feed so neighbors can inspect active issues before submitting duplicates. Recyclean reports are shared with the community only &mdash; they are <strong>not</strong> sent to NYC 311. For city action, also report at <a href="https://portal.311.nyc.gov/" target="_blank" rel="noopener noreferrer" class="underline">portal.311.nyc.gov</a> or call 311.</p>
                         </div>
                     </div>
                 </div>
@@ -714,16 +714,17 @@
                 <div class="app-card p-8 space-y-6">
                     <div>
                         <span class="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-widest">Platform Integrity</span>
-                        <h2 class="text-2xl font-bold text-slate-900 mt-1">Real-World Impact & Safety Verification</h2>
+                        <h2 class="text-2xl font-bold text-slate-900 mt-1">Real-World Impact & Safety</h2>
                     </div>
                     <div class="p-5 bg-slate-50/90 rounded-xl border border-slate-200">
-                        <h3 class="font-bold text-slate-900 mb-2">Age & Identity Verification Engine</h3>
-                        <button onclick="runTechnicalDemo()" class="btn-primary py-2 px-4 text-xs shadow-md">Run Verification Check Demo</button>
+                        <h3 class="font-bold text-slate-900 mb-2">Age Check (prototype)</h3>
+                        <p class="text-xs text-slate-600 mb-2">Age is self-reported from the date of birth entered at signup. ID verification is not built yet.</p>
+                        <button onclick="runTechnicalDemo()" class="btn-primary py-2 px-4 text-xs shadow-md">Run Age Check Demo</button>
                     </div>
                     <div id="tech-demo-box" class="p-4 bg-slate-900 text-slate-100 rounded-xl text-xs font-mono space-y-2 hidden">
-                        <p class="text-emerald-400">&gt; Validating government photo ID...</p>
-                        <p class="text-emerald-400">&gt; Calculating DOB age clearance...</p>
-                        <p id="demo-result" class="text-yellow-400 font-bold">&gt; Status: 18+ Verified. Granted Field Clean-Up Clearance.</p>
+                        <p class="text-emerald-400">&gt; Reading date of birth entered at signup...</p>
+                        <p class="text-emerald-400">&gt; Calculating age...</p>
+                        <p id="demo-result" class="text-yellow-400 font-bold">&gt; Status: 18+ (self-reported). Eligible for field cleanups.</p>
                     </div>
                 </div>
             </section>
@@ -755,12 +756,8 @@
                             <input type="date" id="signup-dob" required onchange="checkSignupAge()" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-white/80">
                         </div>
 
-                        <!-- ID Upload Field -->
-                        <div>
-                            <label class="block font-medium text-slate-700 mb-1 text-xs uppercase tracking-wider">Upload Government ID / Student ID</label>
-                            <input type="file" id="signup-id-file" accept="image/*,.pdf" required class="w-full text-xs p-2 border border-slate-300 rounded-lg bg-white/80">
-                            <p class="text-[10px] text-slate-500 mt-1">Required to confirm identity and age compliance.</p>
-                        </div>
+                        <!-- HONESTY: the old required government-ID upload was never checked or stored, so it was removed. -->
+                        <p class="text-[10px] text-slate-500">Recyclean doesn't collect ID documents. Age is self-reported; please don't share ID numbers in the app.</p>
 
                         <!-- Dynamic Parental Consent Section (Triggered if under 18) -->
                         <div id="parental-consent-box" class="hidden p-3.5 bg-amber-50 border border-amber-200 rounded-xl space-y-3">
@@ -872,14 +869,14 @@
             <div class="rc-panels">
                 <section class="rc-panel" id="section-311" aria-labelledby="rc-news-title">
                     <div class="section-header">
-                        <h2 id="rc-news-title" class="rc-panel-title" style="color:#38bdf8;">📰 Public 311 Incident Feed</h2>
-                        <span style="font-size:0.68rem; color:#00c875;">● Live Public Reports</span>
+                        <h2 id="rc-news-title" class="rc-panel-title" style="color:#38bdf8;">📰 Community Reports</h2>
+                        <span style="font-size:0.68rem; color:#00c875;">● Shared by neighbors</span>
                     </div>
                     <div class="section-body rc-feed" id="public-311-stream">
                         <!-- Populated dynamically via JS -->
                     </div>
                     <div class="rc-panel-foot">
-                        <button type="button" class="btn-dash btn-311" style="width:100%; padding: 8px;" onclick="openDashModal('nyc311-modal')">➕ View / Report 311 Ticket</button>
+                        <button type="button" class="btn-dash btn-311" style="width:100%; padding: 8px;" onclick="openDashModal('nyc311-modal')">➕ View / Post a Report</button>
                     </div>
                 </section>
 
@@ -916,7 +913,8 @@
                 <div>
                     <button onclick="showMapView()" class="btn-dash btn-outline mb-3" style="padding: 4px 12px; font-size: 0.78rem;">← Back to Map View</button>
                     <h1 class="rc-rewards-title" style="font-size: 1.8rem; font-weight: 800; color: #ffffff; letter-spacing: -0.5px;">🏆 RECYCLEAN Points & Rewards Timeline</h1>
-                    <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 4px;">Earn points by completing community recycling tasks, AI scans, and 311 reporting.</p>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin-top: 4px;">Earn points by completing community recycling tasks, photo scans, and community reports.</p>
+                    <p style="color: #eab308; font-size: 0.78rem; margin-top: 6px;">Prototype: reward codes are for demonstration only &mdash; partner rewards aren't available yet.</p>
                 </div>
                 <div style="background: rgba(234, 179, 8, 0.1); border: 2px solid #eab308; padding: 1rem 1.5rem; border-radius: 14px; text-align: center;">
                     <span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 800; color: #eab308; letter-spacing: 1px; display: block;">Your Current Balance</span>
@@ -988,8 +986,8 @@
         <!-- AI SCANNER MODAL -->
         <div id="camera-modal" class="modal-dash">
             <div class="modal-dash-content" style="max-width: 500px;">
-                <h2 style="color:var(--accent-green);">📸 AI Recyclable Scanner</h2>
-                <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 4px; margin-bottom: 1rem;">Identify recyclables and earn points.</p>
+                <h2 style="color:var(--accent-green);">📸 Recyclable Scanner</h2>
+                <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 4px; margin-bottom: 1rem;">Take or upload a photo. An image-recognition model (COCO-SSD) runs in your browser and looks for common recyclables like bottles and cups. Your photo is not uploaded.</p>
                 <div style="position:relative; width:100%; height:200px; background:#000; border-radius:8px; overflow:hidden; display:flex; align-items:center; justify-content:center; margin-bottom:1rem; border: 1px solid var(--border-color);">
                     <video id="webcam-view" autoplay playsinline style="width:100%; height:100%; object-fit:cover; display:none;"></video>
                     <img id="image-preview" style="max-width:100%; max-height:100%; display:none; object-fit:contain;" />
@@ -1004,7 +1002,7 @@
                     <label class="btn-dash btn-outline" style="cursor:pointer; margin:0;">
                         📁 Upload <input type="file" accept="image/*" onchange="handleImageUpload(event)" style="display:none;">
                     </label>
-                    <button class="btn-dash btn-311" onclick="runAiDetection()">⚡ Run AI Scan</button>
+                    <button class="btn-dash btn-311" onclick="runAiDetection()" id="scan-btn">⚡ Scan Photo</button>
                 </div>
                 <!-- UI: the island's Report button opens this scanner; the map-pin report stays one tap away -->
                 <button type="button" class="btn-dash btn-report" style="width:100%; margin-top:12px;" onclick="closeCameraModal(); openDashModal('report-modal');">🗑️ No photo? Pin a Litter Site on the Map</button>
@@ -1039,12 +1037,12 @@
         <div id="volunteer-modal" class="modal-dash">
             <div class="modal-dash-content">
                 <h2 style="color:var(--accent-green);">🤝 Volunteer Clean-Up Registration</h2>
-                <p style="font-size:0.75rem; color:#94a3b8; margin-top:2px; margin-bottom:12px;">⚠️ <strong>Age Restriction Notice:</strong> You must be 18 years or older with verified ID to participate in field trash collection.</p>
+                <p style="font-size:0.75rem; color:#94a3b8; margin-top:2px; margin-bottom:12px;">⚠️ <strong>Age Restriction Notice:</strong> You must be 18 or older (or have a parent/guardian supervising at the site) to participate in field trash collection.</p>
 
                 <!-- Restriction Notice if user is under 18 -->
                 <div id="volunteer-age-warning" class="hidden" style="background:rgba(239, 68, 68, 0.15); border:1px solid #ef4444; padding:12px; border-radius:8px; margin-bottom:12px;">
                     <p style="color:#ef4444; font-size:0.8rem; font-weight:bold;">⛔ Under 18 Verification Restriction</p>
-                    <p style="color:#cbd5e1; font-size:0.75rem; margin-top:4px;">You are currently registered as under 18. Field trash cleanup requires 18+ ID clearance or an authorized parent/guardian supervisor present at the site.</p>
+                    <p style="color:#cbd5e1; font-size:0.75rem; margin-top:4px;">You are currently registered as under 18. Field trash cleanup requires being 18+ or having an authorized parent/guardian supervisor present at the site.</p>
                 </div>
 
                 <form id="volunteer-form" onsubmit="handleVolunteerSignup(event)">
@@ -1055,10 +1053,6 @@
                     <div class="form-group-dash">
                         <label>Age Verification Date of Birth</label>
                         <input type="date" id="volunteer-dob" required onchange="verifyVolunteerAge()">
-                    </div>
-                    <div class="form-group-dash">
-                        <label>Government-Issued ID Verification Number / Photo Upload</label>
-                        <input type="text" id="volunteer-id-num" required placeholder="Driver License / Passport ID #">
                     </div>
                     <div class="form-group-dash">
                         <label>Select Event</label>
@@ -1088,10 +1082,10 @@
         <div id="nyc311-modal" class="modal-dash">
             <div class="modal-dash-content">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                    <h2 style="color: #38bdf8; font-size:1.15rem;">🏛️ Public 311 Violation Dispatch</h2>
-                    <span class="verification-badge badge-verified">Public & Anonymous Sync</span>
+                    <h2 style="color: #38bdf8; font-size:1.15rem;">🏛️ Community Reports</h2>
+                    <span class="verification-badge badge-verified">Shared with neighbors</span>
                 </div>
-                <p style="font-size:0.75rem; color:#94a3b8; margin-bottom:12px;">Check existing public reports below to avoid submitting duplicates, or dispatch a new violation report.</p>
+                <p style="font-size:0.75rem; color:#94a3b8; margin-bottom:12px;">Check existing reports below to avoid duplicates, or post a new one. These reports are <strong>not</strong> sent to NYC 311 &mdash; for city action, also report at <a href="https://portal.311.nyc.gov/" target="_blank" rel="noopener noreferrer" style="color:#38bdf8; text-decoration:underline;">portal.311.nyc.gov</a> or call 311.</p>
 
                 <!-- Check Existing Public Reports Search Bar -->
                 <div style="background:#0b1320; border:1px solid var(--border-color); padding:10px; border-radius:8px; margin-bottom:14px;">
@@ -1105,7 +1099,7 @@
 
                 <!-- Form to Submit New 311 Report -->
                 <form onsubmit="handle311Submit(event)" style="border-top:1px solid var(--border-color); padding-top:12px;">
-                    <h3 style="font-size:0.85rem; font-weight:700; color:#fff; margin-bottom:8px;">📢 Dispatch New Violation Report</h3>
+                    <h3 style="font-size:0.85rem; font-weight:700; color:#fff; margin-bottom:8px;">📢 Post a New Report</h3>
                     
                     <div class="form-group-dash">
                         <label>Location / Intersection</label>
@@ -1136,7 +1130,7 @@
                         <p style="font-size:0.7rem; color:#64748b; margin-top:2px; margin-left:22px;">Hides your username from the public feed and map activity markers.</p>
                     </div>
 
-                    <button type="submit" class="btn-dash btn-311" style="width:100%; margin-top:6px;">🚨 Submit & Publish to Public 311 Feed</button>
+                    <button type="submit" class="btn-dash btn-311" style="width:100%; margin-top:6px;">🚨 Post to Community Reports</button>
                 </form>
 
                 <button class="btn-dash" style="background:#ef4444; color:#fff; width:100%; margin-top:10px;" onclick="closeDashModal('nyc311-modal')">Close</button>
@@ -1179,7 +1173,7 @@
                                 <div>
                                     <h3 style="font-size:0.95rem;" id="setting-avatar-name">BronxEcoHero</h3>
                                     <p style="font-size:0.75rem; color:var(--accent-green);">Level 4 Champion</p>
-                                    <span id="user-age-status-badge" class="verification-badge badge-verified mt-1">18+ ID Verified</span>
+                                    <span id="user-age-status-badge" class="verification-badge badge-verified mt-1">18+ (self-reported)</span>
                                 </div>
                             </div>
                         </div>
@@ -1200,7 +1194,7 @@
                             <div class="setting-row">
                                 <div class="setting-info">
                                     <div class="setting-title">Parental Consent File</div>
-                                    <div class="setting-desc" id="parental-status-desc">Verified by system administrator during setup.</div>
+                                    <div class="setting-desc" id="parental-status-desc">Recorded at signup.</div>
                                 </div>
                             </div>
                         </div>
@@ -1230,7 +1224,7 @@
             <button type="button" class="rc-island-btn is-active" data-rc-view="map" aria-current="page" aria-label="Map" onclick="rcGo('map')"><span class="rc-ico" aria-hidden="true">🗺️</span><span class="rc-lbl">Map</span></button>
             <button type="button" class="rc-island-btn" data-rc-view="chat" aria-label="Chat" onclick="rcGo('chat')"><span class="rc-ico" aria-hidden="true">💬</span><span class="rc-lbl">Chat</span></button>
             <button type="button" class="rc-island-btn rc-island-report" data-rc-view="report" aria-label="Report litter" onclick="rcGo('report')"><span class="rc-island-fab" aria-hidden="true">📸</span><span class="rc-lbl">Report</span></button>
-            <button type="button" class="rc-island-btn" data-rc-view="news" aria-label="News: public 311 feed" onclick="rcGo('news')"><span class="rc-ico" aria-hidden="true">📰</span><span class="rc-lbl">News</span></button>
+            <button type="button" class="rc-island-btn" data-rc-view="news" aria-label="News: community reports" onclick="rcGo('news')"><span class="rc-ico" aria-hidden="true">📰</span><span class="rc-lbl">News</span></button>
             <button type="button" class="rc-island-btn" data-rc-view="menu" aria-label="Menu and settings" aria-haspopup="dialog" aria-controls="rc-menu-sheet" aria-expanded="false" onclick="rcGo('menu', this)"><span class="rc-ico" aria-hidden="true">☰</span><span class="rc-lbl">Menu</span></button>
         </nav>
 
@@ -1252,9 +1246,9 @@
                     <button type="button" class="rc-sheet-item" onclick="rcMenuAction(() => rcGo('rewards'))">🎁 <span>Rewards &amp; Perks</span></button>
                     <button type="button" class="rc-sheet-item" onclick="rcMenuAction(openVolunteerModal)">🤝 <span>Volunteer (18+)</span></button>
                     <button type="button" class="rc-sheet-item" onclick="rcMenuAction(() => openDashModal('notifications-modal'))">🔔 <span>Alerts</span> <span class="badge-count">5</span></button>
-                    <button type="button" class="rc-sheet-item" onclick="rcMenuAction(openCameraModal)">📸 <span>AI Recyclable Scanner</span></button>
+                    <button type="button" class="rc-sheet-item" onclick="rcMenuAction(openCameraModal)">📸 <span>Recyclable Scanner</span></button>
                     <button type="button" class="rc-sheet-item" onclick="rcMenuAction(() => openDashModal('report-modal'))">🗑️ <span>Pin a Litter Site</span></button>
-                    <button type="button" class="rc-sheet-item" onclick="rcMenuAction(() => openDashModal('nyc311-modal'))">🏛️ <span>File a 311 Report</span></button>
+                    <button type="button" class="rc-sheet-item" onclick="rcMenuAction(() => openDashModal('nyc311-modal'))">🏛️ <span>Post a Community Report</span></button>
                     <button type="button" class="rc-sheet-item" onclick="rcMenuAction(() => openDashModal('settings-modal'))">⚙️ <span>Settings &amp; Profile</span></button>
                 </div>
 
@@ -1538,12 +1532,12 @@
             const parentDesc = document.getElementById('parental-status-desc');
             if (!userIsOver18) {
                 badge.className = 'verification-badge badge-minor mt-1';
-                badge.innerText = 'Under 18 (Parent Consent Verified)';
-                parentDesc.innerText = 'Verified through submitted parental consent form & photo ID.';
+                badge.innerText = 'Under 18 (parental consent given)';
+                parentDesc.innerText = 'Parental consent was given at signup (not independently verified).';
             } else {
                 badge.className = 'verification-badge badge-verified mt-1';
-                badge.innerText = '18+ ID Verified';
-                parentDesc.innerText = 'User verified over 18 via government ID scan.';
+                badge.innerText = '18+ (self-reported)';
+                parentDesc.innerText = 'Age is self-reported at signup. ID checks are not built yet.';
             }
 
             document.getElementById('public-layout').classList.add('hidden');
@@ -1568,7 +1562,7 @@
         function runTechnicalDemo() {
             const demoBox = document.getElementById('tech-demo-box');
             demoBox.classList.remove('hidden');
-            const ageStatus = userIsOver18 ? "18+ Verified. Granted Field Clean-Up Clearance." : "Under 18. Parental Consent Recorded.";
+            const ageStatus = userIsOver18 ? "18+ (self-reported). Eligible for field cleanups." : "Under 18 (self-reported). Parental consent recorded at signup.";
             document.getElementById('demo-result').innerText = `> Status: ${ageStatus}`;
         }
 
@@ -1839,7 +1833,7 @@
             render311PublicFeeds();
 
             setPoints(saved.points_balance);
-            alert(`🚨 Public 311 Ticket dispatched! Published to community feed ${isAnon ? '(Anonymously)' : ''}. +15 PTS earned.`);
+            alert(`✅ Report posted to the Recyclean community feed ${isAnon ? '(anonymously)' : ''}. +15 PTS earned.\n\nThis does not notify NYC. For city action, also report at portal.311.nyc.gov or call 311.`);
             
             document.getElementById('311-location').value = '';
             document.getElementById('311-desc').value = '';
@@ -1934,7 +1928,7 @@
             } catch (err) { apiErrorAlert(err); return; }
             document.getElementById('volunteer-form').style.display = 'none';
             const successBox = document.getElementById('volunteer-success');
-            document.getElementById('volunteer-success-msg').innerText = `Verified 18+ Volunteer: ${name} registered for ${eventName}`;
+            document.getElementById('volunteer-success-msg').innerText = `Registered: ${name} for ${eventName}`;
             successBox.style.display = 'block';
             setPoints(saved.points_balance);
         }
@@ -2056,17 +2050,84 @@
             reader.readAsDataURL(file);
         }
 
+        // SCANNER: runs the COCO-SSD object-detection model (TensorFlow.js) in the browser on the
+        // uploaded photo or the current camera frame. The photo never leaves the device.
+        // COCO-SSD knows 80 everyday objects; only the ones below count as recyclable items.
+        // Points are awarded only when one of them is actually detected.
+        const RECYCLABLE_CLASSES = {
+            'bottle':     { label: 'Bottle',       tip: 'Empty and rinse it, then put it in the blue recycling bin.' },
+            'cup':        { label: 'Cup',          tip: 'Plastic or metal cups go in the blue bin; paper cups with plastic lining go in the trash.' },
+            'wine glass': { label: 'Glass',        tip: 'Glass bottles and jars go in the blue bin; drinking glasses go in the trash.' },
+            'book':       { label: 'Paper / book', tip: 'Paper goes in the green bin; consider donating books in good condition.' },
+            'cell phone': { label: 'Electronics',  tip: 'E-waste: take it to a special drop-off, never the curbside bins.' },
+            'laptop':     { label: 'Electronics',  tip: 'E-waste: take it to a special drop-off, never the curbside bins.' },
+            'keyboard':   { label: 'Electronics',  tip: 'E-waste: take it to a special drop-off, never the curbside bins.' },
+            'mouse':      { label: 'Electronics',  tip: 'E-waste: take it to a special drop-off, never the curbside bins.' },
+            'remote':     { label: 'Electronics',  tip: 'E-waste: take it to a special drop-off, never the curbside bins.' },
+            'tv':         { label: 'Electronics',  tip: 'E-waste: take it to a special drop-off, never the curbside bins.' }
+        };
+        const SCAN_MIN_SCORE = 0.5;
+        let cocoModelPromise = null;
+
+        function loadCocoModel() {
+            if (typeof cocoSsd === 'undefined') return Promise.reject(new Error('model library failed to load'));
+            if (!cocoModelPromise) {
+                cocoModelPromise = cocoSsd.load().catch(err => { cocoModelPromise = null; throw err; });
+            }
+            return cocoModelPromise;
+        }
+
+        function scanSource() {
+            const img = document.getElementById('image-preview');
+            if (img && img.style.display !== 'none' && img.src && img.complete && img.naturalWidth) return img;
+            const video = document.getElementById('webcam-view');
+            if (video && video.style.display !== 'none' && video.readyState >= 2) return video;
+            return null;
+        }
+
         async function runAiDetection() {
             const res = document.getElementById('scan-result');
+            const btn = document.getElementById('scan-btn');
             res.style.display = 'block';
-            // DB: each scan is logged to scan_logs via POST /api/scans (+20 PTS server-side).
-            // The demo detection has no real confidence value, so a fixed demo score is sent.
+            const source = scanSource();
+            if (!source) {
+                res.innerHTML = '<span style="color:#eab308;">Start the camera or upload a photo first.</span>';
+                return;
+            }
+            if (btn) btn.disabled = true;
+            res.innerHTML = '<span style="color:#94a3b8;">⏳ Loading the image-recognition model and scanning…</span>';
+            let predictions;
+            try {
+                const model = await loadCocoModel();
+                predictions = await model.detect(source);
+            } catch (err) {
+                res.innerHTML = '<span style="color:#ef4444;">Could not run the scanner (the model did not load). Check your connection and try again.</span>';
+                if (btn) btn.disabled = false;
+                return;
+            }
+            const hits = predictions
+                .filter(p => RECYCLABLE_CLASSES[p.class] && p.score >= SCAN_MIN_SCORE)
+                .sort((a, b) => b.score - a.score);
+            if (!hits.length) {
+                const seen = predictions.filter(p => p.score >= SCAN_MIN_SCORE).map(p => p.class);
+                res.innerHTML = '<span style="color:#eab308;">No recyclable item detected' +
+                    (seen.length ? ' (saw: ' + esc([...new Set(seen)].join(', ')) + ')' : '') +
+                    '. Try a clearer, closer photo — or pin the litter site on the map instead. No points awarded.</span>';
+                if (btn) btn.disabled = false;
+                return;
+            }
+            const best = hits[0];
+            const info = RECYCLABLE_CLASSES[best.class];
+            const confidence = Math.round(best.score * 10000) / 100;
+            // DB: each successful scan is logged to scan_logs via POST /api/scans (+20 PTS server-side)
             let saved;
             try {
-                saved = await api('/api/scans', { method: 'POST', body: { detected_category: 'Plastic Recyclable', confidence_score: 90 } });
-            } catch (err) { apiErrorAlert(err); return; }
-            res.innerHTML = '<span style="color:#22c55e;">✅ AI Detected: <strong>Plastic Recyclable</strong> (+20 PTS)</span>';
+                saved = await api('/api/scans', { method: 'POST', body: { detected_category: info.label, confidence_score: confidence } });
+            } catch (err) { apiErrorAlert(err); if (btn) btn.disabled = false; return; }
+            res.innerHTML = '<span style="color:#22c55e;">✅ Detected: <strong>' + esc(info.label) + '</strong> (' +
+                Math.round(confidence) + '% confidence) — +20 PTS</span><br><span style="color:#cbd5e1; font-size:0.8rem;">' + esc(info.tip) + '</span>';
             setPoints(saved.points_balance);
+            if (btn) btn.disabled = false;
         }
 
         function closeCameraModal() {
